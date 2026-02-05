@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dina Milagros Delgado Quispe - Portafolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">MDQ</a>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#sobre-mi">Sobre Mí</a></li>
+                <li><a href="#habilidades">Habilidades</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="inicio" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Hola, soy <span class="highlight">Dina Milagros Delgado Quispe</span></h1>
+                <p class="subtitle">Estudiante de Ingeniería Estadística e Informática</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <h3>247092</h3>
+                        <p>Código</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>2026</h3>
+                        <p>Año Actual</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="img/foto.jpg" alt="Dina Milagros Delgado Quispe">
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre-mi" class="about">
+        <div class="container">
+            <h2 class="section-title">Sobre Mí</h2>
+            <p class="about-description">Soy estudiante de <strong>Ingeniería Estadística e Informática</strong>, apasionada por el análisis de datos, la programación y el desarrollo de soluciones tecnológicas innovadoras.</p>
+            
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>Escuela Profesional</h3>
+                    <p>Ingeniería Estadística e Informática</p>
+                </div>
+                <div class="about-card">
+                    <h3>Curso Actual</h3>
+                    <p>Lenguaje de Programación 1</p>
+                </div>
+                <div class="about-card">
+                    <h3>Docente</h3>
+                    <p>Fred Torres Cruz</p>
+                </div>
+                <div class="about-card">
+                    <h3>Duración</h3>
+                    <p>19 de enero – 6 de marzo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="habilidades" class="skills">
+        <div class="container">
+            <h2 class="section-title">Habilidades</h2>
+            <div class="skills-grid">
+                <div class="skill-card">Lenguaje C</div>
+                <div class="skill-card">C++</div>
+                <div class="skill-card">Programación Estructurada</div>
+                <div class="skill-card">Algoritmos</div>
+                <div class="skill-card">Lógica de Programación</div>
+                <div class="skill-card">Estructuras de Datos</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="proyectos" class="projects">
+        <div class="container">
+            <h2 class="section-title">Proyectos</h2>
+            
+            <!-- Unidad 1 -->
+            <div class="unit-section">
+                <h3 class="unit-title">Unidad 1</h3>
+                <div class="project-grid">
+                    <!-- Actividades de Programación -->
+                    <div class="project-card">
+                        <h4>Actividades de Programación</h4>
+                        <p>Ejercicios en C y C++ de la Unidad 1. Agrega tus ejercicios con código fuente y salida.</p>
+                        <div class="project-tags">
+                            <span class="tag">C</span>
+                            <span class="tag">C++</span>
+                            <span class="tag exercises-count">0 ejercicios</span>
+                        </div>
+                        <button class="btn-primary" onclick="openExercises()">Ver Ejercicios</button>
+                    </div>
+                    
+                    <!-- Libro del Curso -->
+                    <div class="project-card">
+                        <h4>Libro del Curso</h4>
+                        <p>Material de lectura y consulta de la Unidad 1. Teoría y conceptos fundamentales.</p>
+                        <div class="project-tags">
+                            <span class="tag">PDF</span>
+                            <span class="tag">Teoría</span>
+                        </div>
+                        <button class="btn-secondary" onclick="openBook()">Gestionar Libro</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unidad 2 -->
+            <div class="unit-section">
+                <h3 class="unit-title">Unidad 2</h3>
+                <div class="project-grid">
+                    <!-- Actividades de Programación -->
+                    <div class="project-card">
+                        <h4>Actividades de Programación</h4>
+                        <p>Ejercicios en C y C++ de la Unidad 2. Agrega tus ejercicios con código fuente y salida.</p>
+                        <div class="project-tags">
+                            <span class="tag">C</span>
+                            <span class="tag">C++</span>
+                            <span class="tag exercises-count">0 ejercicios</span>
+                        </div>
+                        <button class="btn-primary" onclick="alert('Unidad 2 - Próximamente')">Ver Ejercicios</button>
+                    </div>
+                    
+                    <!-- Libro del Curso -->
+                    <div class="project-card">
+                        <h4>Libro del Curso</h4>
+                        <p>Material de lectura y consulta de la Unidad 2. Teoría y conceptos avanzados.</p>
+                        <div class="project-tags">
+                            <span class="tag">PDF</span>
+                            <span class="tag">Teoría</span>
+                        </div>
+                        <button class="btn-secondary" onclick="alert('Unidad 2 - Próximamente')">Gestionar Libro</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contacto</h2>
+            <p class="contact-intro">¿Tienes alguna pregunta o propuesta? No dudes en contactarme.</p>
+            
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h4>Nombre</h4>
+                    <p>Dina Milagros Delgado Quispe</p>
+                </div>
+                <div class="contact-card">
+                    <h4>Email</h4>
+                    <p><a href="mailto:dmdq1804@gmail.com">dmdq1804@gmail.com</a></p>
+                </div>
+                <div class="contact-card">
+                    <h4>Universidad</h4>
+                    <p>Código: 247092</p>
+                </div>
+                <div class="contact-card">
+                    <h4>Ubicación</h4>
+                    <p>Perú</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Dina Milagros Delgado Quispe. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Ejercicios -->
+    <div id="exercisesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Actividades de Programación</h3>
+                <span class="close" onclick="closeExercises()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <button class="btn-add" onclick="openAddExercise()">Agregar Nuevo Ejercicio</button>
+                
+                <!-- Filtro por actividad -->
+                <div class="activity-filter">
+                    <button class="filter-btn active" onclick="filterActivity('all')">Todas</button>
+                    <button class="filter-btn" onclick="filterActivity(1)">Actividad 1</button>
+                    <button class="filter-btn" onclick="filterActivity(2)">Actividad 2</button>
+                    <button class="filter-btn" onclick="filterActivity(3)">Actividad 3</button>
+                    <button class="filter-btn" onclick="filterActivity(4)">Actividad 4</button>
+                    <button class="filter-btn" onclick="filterActivity(5)">Actividad 5</button>
+                    <button class="filter-btn" onclick="filterActivity(6)">Actividad 6</button>
+                    <button class="filter-btn" onclick="filterActivity(7)">Actividad 7</button>
+                </div>
+                
+                <div id="exercisesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Ejercicio -->
+    <div id="addExerciseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Agregar Ejercicio</h3>
+                <span class="close" onclick="closeAddExercise()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addExerciseForm">
+                    <div class="form-group">
+                        <label>Título del Ejercicio:</label>
+                        <input type="text" id="exerciseTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Número de Ejercicio:</label>
+                        <input type="number" id="exerciseNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Actividad:</label>
+                        <select id="exerciseActivity" required>
+                            <option value="1">Actividad 1</option>
+                            <option value="2">Actividad 2</option>
+                            <option value="3">Actividad 3</option>
+                            <option value="4">Actividad 4</option>
+                            <option value="5">Actividad 5</option>
+                            <option value="6">Actividad 6</option>
+                            <option value="7">Actividad 7</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Lenguaje:</label>
+                        <select id="exerciseLanguage">
+                            <option value="C">C</option>
+                            <option value="C++">C++</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Código Fuente:</label>
+                        <textarea id="exerciseCode" rows="10" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Salida del Programa:</label>
+                        <textarea id="exerciseOutput" rows="5" required></textarea>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-primary">Guardar</button>
+                        <button type="button" class="btn-secondary" onclick="closeAddExercise()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Libro -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Libro del Curso</h3>
+                <span class="close" onclick="closeBook()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Gestiona el libro del curso en formato PDF</p>
+                <div class="book-buttons">
+                    <button class="btn-primary">Subir Libro (PDF)</button>
+                    <button class="btn-secondary">Ver Libro</button>
+                    <button class="btn-danger">Eliminar Libro</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
