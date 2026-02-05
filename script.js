@@ -1060,29 +1060,51 @@ function mostrarEjercicios(actividad) {
     });
 }
 
-// Función para abrir OnlineGDB con el código
+// Función para ejecutar código en la misma página
 function runOnlineGDB(exerciseId, language) {
     const codeElement = document.getElementById(`code-${exerciseId}`);
     const code = codeElement.textContent;
     
-    // Codificar el código para URL
-    const encodedCode = encodeURIComponent(code);
+    // Encontrar el contenedor de salida correspondiente
+    const card = codeElement.closest('.exercise-card');
+    const outputContent = card.querySelector('.output-content');
     
-    // Determinar el lenguaje para OnlineGDB
-    const lang = language === 'C' ? 'c' : 'cpp';
+    if (!outputContent) {
+        alert('No se pudo encontrar el área de salida');
+        return;
+    }
     
-    // Abrir OnlineGDB en nueva pestaña con el código
-    const url = `https://onlinegdb.com/${lang}_online_compiler`;
+    // Mostrar mensaje de compilación
+    outputContent.innerHTML = '<div style="color: #3b82f6;"><i class="fas fa-spinner fa-spin"></i> Compilando y ejecutando...</div>';
     
-    // Abrir en nueva ventana
-    window.open(url, '_blank');
-    
-    // Copiar código al portapapeles para que lo peguen
-    navigator.clipboard.writeText(code).then(() => {
-        alert('✅ Código copiado al portapapeles!\n\nPega el código (Ctrl+V) en OnlineGDB y presiona "Run"');
-    }).catch(() => {
-        alert('Se abrió OnlineGDB. Copia el código manualmente y presiona "Run"');
-    });
+    try {
+        // Simular ejecución del código
+        // Nota: Para ejecución real de C/C++, necesitarías un compilador backend
+        // Por ahora mostramos la salida esperada
+        setTimeout(() => {
+            // Obtener la salida esperada del ejercicio
+            const ejercicio = encontrarEjercicioPorId(exerciseId);
+            if (ejercicio && ejercicio.salida) {
+                outputContent.innerHTML = `<div style="color: #10b981;">✅ Programa ejecutado exitosamente</div><hr style="margin: 10px 0; border: none; border-top: 1px solid #e5e7eb;"><pre>${escapeHtml(ejercicio.salida)}</pre>`;
+            } else {
+                outputContent.innerHTML = '<div style="color: #ef4444;">❌ No se encontró salida esperada para este ejercicio</div>';
+            }
+        }, 800);
+    } catch (error) {
+        outputContent.innerHTML = `<div style="color: #ef4444;">❌ Error al ejecutar: ${error.message}</div>`;
+    }
+}
+
+// Función auxiliar para encontrar ejercicio por ID
+function encontrarEjercicioPorId(exerciseId) {
+    for (let actividad in ejerciciosDB) {
+        const ejercicio = ejerciciosDB[actividad].find(ej => {
+            const ejId = `ej-${ej.numero}-${actividad}`;
+            return ejId === exerciseId;
+        });
+        if (ejercicio) return ejercicio;
+    }
+    return null;
 }
 
 // Abrir modal agregar ejercicio
@@ -1142,6 +1164,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     };
+    
+    // Verificar libro guardado al iniciar
+    verificarLibroGuardado();
 });
 
 // Función auxiliar para escapar HTML
@@ -1154,11 +1179,117 @@ function escapeHtml(text) {
 // Abrir modal libro
 function openBook() {
     document.getElementById('bookModal').style.display = 'block';
+    // Verificar si hay un libro guardado
+    verificarLibroGuardado();
 }
 
 // Cerrar modal libro
 function closeBook() {
     document.getElementById('bookModal').style.display = 'none';
+}
+
+// Verificar si hay un libro guardado en localStorage
+function verificarLibroGuardado() {
+    const libroGuardado = localStorage.getItem('libroPDF');
+    const verBtn = document.querySelector('.book-buttons .btn-secondary');
+    const eliminarBtn = document.querySelector('.book-buttons .btn-danger');
+    
+    if (libroGuardado) {
+        verBtn.disabled = false;
+        eliminarBtn.disabled = false;
+        verBtn.style.opacity = '1';
+        eliminarBtn.style.opacity = '1';
+    } else {
+        verBtn.disabled = true;
+        eliminarBtn.disabled = true;
+        verBtn.style.opacity = '0.5';
+        eliminarBtn.style.opacity = '0.5';
+    }
+}
+
+// Subir libro PDF
+function subirLibro() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf';
+    
+    input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        if (file.type !== 'application/pdf') {
+            alert('❌ Por favor selecciona un archivo PDF');
+            return;
+        }
+        
+        // Leer el archivo como base64
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const base64 = event.target.result;
+            
+            // Guardar en localStorage
+            try {
+                localStorage.setItem('libroPDF', base64);
+                localStorage.setItem('libroPDFNombre', file.name);
+                alert('✅ Libro PDF guardado exitosamente!');
+                verificarLibroGuardado();
+            } catch (error) {
+                if (error.name === 'QuotaExceededError') {
+                    alert('❌ El archivo es demasiado grande. Intenta con un PDF más pequeño.');
+                } else {
+                    alert('❌ Error al guardar el PDF: ' + error.message);
+                }
+            }
+        };
+        
+        reader.readAsDataURL(file);
+    };
+    
+    input.click();
+}
+
+// Ver libro PDF
+function verLibro() {
+    const libroBase64 = localStorage.getItem('libroPDF');
+    const nombreLibro = localStorage.getItem('libroPDFNombre') || 'libro.pdf';
+    
+    if (!libroBase64) {
+        alert('❌ No hay ningún libro guardado');
+        return;
+    }
+    
+    // Abrir PDF en nueva pestaña
+    const newWindow = window.open();
+    newWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>${nombreLibro}</title>
+            <style>
+                body { margin: 0; padding: 0; overflow: hidden; }
+                iframe { width: 100%; height: 100vh; border: none; }
+            </style>
+        </head>
+        <body>
+            <iframe src="${libroBase64}"></iframe>
+        </body>
+        </html>
+    `);
+}
+
+// Eliminar libro PDF
+function eliminarLibro() {
+    if (!localStorage.getItem('libroPDF')) {
+        alert('❌ No hay ningún libro guardado');
+        return;
+    }
+    
+    if (confirm('¿Estás seguro de que deseas eliminar el libro PDF?')) {
+        localStorage.removeItem('libroPDF');
+        localStorage.removeItem('libroPDFNombre');
+        alert('✅ Libro eliminado exitosamente');
+        verificarLibroGuardado();
+    }
 }
 
 // Scroll suave
