@@ -971,6 +971,34 @@ footer p {
     font-weight: 700;
     border-bottom: 1px solid #30363d;
     font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-compile {
+    padding: 0.625rem 1.25rem;
+    background: var(--gradient-success);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-compile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.5);
+}
+
+.btn-compile i {
+    font-size: 0.9rem;
 }
 
 pre {
