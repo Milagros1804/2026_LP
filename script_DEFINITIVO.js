@@ -998,11 +998,12 @@ function filterActivity(actividad) {
     actividadActual = actividad;
     const btns = document.querySelectorAll('.filter-btn');
     btns.forEach(btn => btn.classList.remove('active'));
+    btns.forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
     mostrarEjercicios(actividad);
 }
 
-// Mostrar ejercicios
+// Mostrar ejercicios CON COMPILADOR INTEGRADO
 function mostrarEjercicios(actividad) {
     const container = document.getElementById('exercisesList');
     container.innerHTML = '';
@@ -1027,9 +1028,11 @@ function mostrarEjercicios(actividad) {
         return;
     }
     
-    ejercicios.forEach(ej => {
+    ejercicios.forEach((ej, index) => {
         const card = document.createElement('div');
         card.className = 'exercise-card';
+        const uniqueId = `exercise-${ej.actividad}-${ej.numero}`;
+        
         card.innerHTML = `
             <div class="exercise-header">
                 <div class="exercise-title">
@@ -1040,17 +1043,118 @@ function mostrarEjercicios(actividad) {
                     </div>
                 </div>
             </div>
-            <div class="code-container">
-                <div class="code-header">Código Fuente</div>
-                <pre><code>${escapeHtml(ej.codigo)}</code></pre>
+            
+            <!-- COMPILADOR INTEGRADO -->
+            <div class="compiler-section">
+                <div class="compiler-header">
+                    <span class="compiler-title">
+                        <i class="fas fa-terminal"></i> Editor de Código (Editable)
+                    </span>
+                    <div class="compiler-actions">
+                        <button class="btn-execute" onclick="executeCode('${uniqueId}', '${ej.lenguaje}')">
+                            <i class="fas fa-play"></i> Ejecutar
+                        </button>
+                        <button class="btn-reset" onclick="resetCode('${uniqueId}')">
+                            <i class="fas fa-undo"></i> Reset
+                        </button>
+                    </div>
+                </div>
+                <div class="code-editor">
+                    <textarea id="code-${uniqueId}" spellcheck="false">${escapeHtml(ej.codigo)}</textarea>
+                </div>
+                <div class="output-section" id="output-section-${uniqueId}" style="display:none;">
+                    <div class="output-header">
+                        <i class="fas fa-arrow-right"></i> Salida del Programa
+                    </div>
+                    <div class="output-content" id="output-${uniqueId}">
+                        ${escapeHtml(ej.salida)}
+                    </div>
+                </div>
             </div>
+            
+            <!-- SALIDA ORIGINAL (REFERENCIA) -->
             <div class="output-container">
-                <div class="output-header">📤 Salida del Programa</div>
+                <div class="output-header">📋 Salida Esperada (Referencia)</div>
                 <div class="output-content">${escapeHtml(ej.salida)}</div>
             </div>
         `;
         container.appendChild(card);
+        
+        // Guardar código original para reset
+        card.dataset.originalCode = ej.codigo;
     });
+}
+
+// FUNCIÓN PARA EJECUTAR CÓDIGO CON JUDGE0 API
+async function executeCode(exerciseId, language) {
+    const codeElement = document.getElementById(`code-${exerciseId}`);
+    const outputElement = document.getElementById(`output-${exerciseId}`);
+    const outputSection = document.getElementById(`output-section-${exerciseId}`);
+    
+    const code = codeElement.value;
+    
+    // Mostrar sección de salida
+    outputSection.style.display = 'block';
+    outputElement.innerHTML = '<div class="output-loading"><i class="fas fa-spinner spinner"></i> Compilando y ejecutando...</div>';
+    
+    // Determinar language_id para Judge0
+    const languageId = language === 'C' ? 50 : 54; // 50=C (GCC 9.2.0), 54=C++ (GCC 9.2.0)
+    
+    try {
+        // IMPORTANTE: Esta es una API de demostración
+        // Para producción, deberías usar tu propia API key de Judge0
+        const response = await fetch('https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                'X-RapidAPI-Key': 'TU_API_KEY_AQUI', // CAMBIAR por tu API key
+                'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+            },
+            body: JSON.stringify({
+                language_id: languageId,
+                source_code: code,
+                stdin: ""
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.stdout) {
+            outputElement.innerHTML = `<div class="output-success">${escapeHtml(result.stdout)}</div>`;
+        } else if (result.stderr) {
+            outputElement.innerHTML = `<div class="output-error"><i class="fas fa-exclamation-triangle"></i> Error de compilación:\n${escapeHtml(result.stderr)}</div>`;
+        } else if (result.compile_output) {
+            outputElement.innerHTML = `<div class="output-error"><i class="fas fa-exclamation-triangle"></i> Error de compilación:\n${escapeHtml(result.compile_output)}</div>`;
+        } else {
+            outputElement.innerHTML = `<div class="output-error"><i class="fas fa-times-circle"></i> Error desconocido en la ejecución</div>`;
+        }
+    } catch (error) {
+        // MODO DEMOSTRACIÓN: Si falla la API, mostrar mensaje informativo
+        outputElement.innerHTML = `
+            <div class="output-error">
+                <i class="fas fa-info-circle"></i> <strong>Modo Demostración</strong><br><br>
+                Para habilitar la ejecución real de código:<br>
+                1. Registrarse en <a href="https://rapidapi.com/judge0-official/api/judge0-ce" target="_blank" style="color: #3b82f6;">Judge0 API</a><br>
+                2. Obtener API Key gratuita (50 ejecuciones/día)<br>
+                3. Reemplazar 'TU_API_KEY_AQUI' en script.js línea 1032<br><br>
+                <em>El código se muestra correctamente pero no se ejecuta sin API key.</em>
+            </div>
+        `;
+        console.error('Error al ejecutar código:', error);
+    }
+}
+
+// FUNCIÓN PARA RESETEAR CÓDIGO
+function resetCode(exerciseId) {
+    const codeElement = document.getElementById(`code-${exerciseId}`);
+    const card = codeElement.closest('.exercise-card');
+    const originalCode = card.dataset.originalCode;
+    
+    codeElement.value = originalCode;
+    
+    // Ocultar salida
+    const outputSection = document.getElementById(`output-section-${exerciseId}`);
+    outputSection.style.display = 'none';
 }
 
 // Abrir modal agregar ejercicio

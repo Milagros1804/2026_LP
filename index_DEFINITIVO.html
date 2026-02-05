@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dina Milagros Delgado Quispe - Portafolio</title>
+    <title>Dina Milagros Delgado Quispe - Portafolio Profesional</title>
+    
+    <!-- Font Awesome para iconos profesionales -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- ==================== NAVBAR ==================== -->
     <nav class="navbar">
         <div class="container">
             <a href="#" class="logo">MDQ</a>
@@ -20,6 +26,7 @@
         </div>
     </nav>
 
+    <!-- ==================== HERO SECTION ==================== -->
     <section id="inicio" class="hero">
         <div class="container">
             <div class="hero-content">
@@ -42,6 +49,7 @@
         </div>
     </section>
 
+    <!-- ==================== ABOUT SECTION ==================== -->
     <section id="sobre-mi" class="about">
         <div class="container">
             <h2 class="section-title">Sobre Mí</h2>
@@ -49,103 +57,144 @@
             
             <div class="about-grid">
                 <div class="about-card">
-                    <h3>Escuela Profesional</h3>
+                    <h3><i class="fas fa-university"></i> Escuela Profesional</h3>
                     <p>Ingeniería Estadística e Informática</p>
                 </div>
                 <div class="about-card">
-                    <h3>Curso Actual</h3>
+                    <h3><i class="fas fa-laptop-code"></i> Curso Actual</h3>
                     <p>Lenguaje de Programación 1</p>
                 </div>
                 <div class="about-card">
-                    <h3>Docente</h3>
+                    <h3><i class="fas fa-user-tie"></i> Docente</h3>
                     <p>Fred Torres Cruz</p>
                 </div>
                 <div class="about-card">
-                    <h3>Duración</h3>
+                    <h3><i class="fas fa-calendar-check"></i> Duración</h3>
                     <p>19 de enero – 6 de marzo</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- ==================== SKILLS SECTION ==================== -->
     <section id="habilidades" class="skills">
         <div class="container">
             <h2 class="section-title">Habilidades</h2>
             <div class="skills-grid">
-                <div class="skill-card">Lenguaje C</div>
-                <div class="skill-card">C++</div>
-                <div class="skill-card">Programación Estructurada</div>
-                <div class="skill-card">Algoritmos</div>
-                <div class="skill-card">Lógica de Programación</div>
-                <div class="skill-card">Estructuras de Datos</div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fab fa-cuttlefish" style="color: #00599C;"></i>
+                    </div>
+                    <span>Lenguaje C</span>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-code" style="color: #00599C;"></i>
+                    </div>
+                    <span>C++</span>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-terminal" style="color: #059669;"></i>
+                    </div>
+                    <span>Programación Estructurada</span>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-project-diagram" style="color: #7c3aed;"></i>
+                    </div>
+                    <span>Algoritmos</span>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-brain" style="color: #f59e0b;"></i>
+                    </div>
+                    <span>Lógica de Programación</span>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-database" style="color: #059669;"></i>
+                    </div>
+                    <span>Estructuras de Datos</span>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- ==================== PROJECTS SECTION ==================== -->
     <section id="proyectos" class="projects">
         <div class="container">
             <h2 class="section-title">Proyectos</h2>
             
             <!-- Unidad 1 -->
             <div class="unit-section">
-                <h3 class="unit-title">Unidad 1</h3>
+                <h3 class="unit-title"><i class="fas fa-folder-open"></i> Unidad 1</h3>
                 <div class="project-grid">
                     <!-- Actividades de Programación -->
                     <div class="project-card">
-                        <h4>Actividades de Programación</h4>
-                        <p>Ejercicios en C y C++ de la Unidad 1. Agrega tus ejercicios con código fuente y salida.</p>
+                        <h4><i class="fas fa-laptop-code"></i> Actividades de Programación</h4>
+                        <p>Ejercicios en C y C++ de la Unidad 1. Código ejecutable con compilador integrado.</p>
                         <div class="project-tags">
-                            <span class="tag">C</span>
-                            <span class="tag">C++</span>
-                            <span class="tag exercises-count">0 ejercicios</span>
+                            <span class="tag"><i class="fab fa-cuttlefish"></i> C</span>
+                            <span class="tag"><i class="fas fa-code"></i> C++</span>
+                            <span class="tag exercises-count"><i class="fas fa-file-code"></i> 0 ejercicios</span>
                         </div>
-                        <button class="btn-primary" onclick="openExercises()">Ver Ejercicios</button>
+                        <button class="btn-primary" onclick="openExercises()">
+                            <i class="fas fa-play-circle"></i> Ver Ejercicios
+                        </button>
                     </div>
                     
                     <!-- Libro del Curso -->
                     <div class="project-card">
-                        <h4>Libro del Curso</h4>
+                        <h4><i class="fas fa-book-open"></i> Libro del Curso</h4>
                         <p>Material de lectura y consulta de la Unidad 1. Teoría y conceptos fundamentales.</p>
                         <div class="project-tags">
-                            <span class="tag">PDF</span>
-                            <span class="tag">Teoría</span>
+                            <span class="tag"><i class="fas fa-file-pdf"></i> PDF</span>
+                            <span class="tag"><i class="fas fa-graduation-cap"></i> Teoría</span>
                         </div>
-                        <button class="btn-secondary" onclick="openBook()">Gestionar Libro</button>
+                        <button class="btn-secondary" onclick="openBook()">
+                            <i class="fas fa-cog"></i> Gestionar Libro
+                        </button>
                     </div>
                 </div>
             </div>
 
             <!-- Unidad 2 -->
             <div class="unit-section">
-                <h3 class="unit-title">Unidad 2</h3>
+                <h3 class="unit-title"><i class="fas fa-folder-open"></i> Unidad 2</h3>
                 <div class="project-grid">
                     <!-- Actividades de Programación -->
                     <div class="project-card">
-                        <h4>Actividades de Programación</h4>
-                        <p>Ejercicios en C y C++ de la Unidad 2. Agrega tus ejercicios con código fuente y salida.</p>
+                        <h4><i class="fas fa-laptop-code"></i> Actividades de Programación</h4>
+                        <p>Ejercicios en C y C++ de la Unidad 2. Código ejecutable con compilador integrado.</p>
                         <div class="project-tags">
-                            <span class="tag">C</span>
-                            <span class="tag">C++</span>
-                            <span class="tag exercises-count">0 ejercicios</span>
+                            <span class="tag"><i class="fab fa-cuttlefish"></i> C</span>
+                            <span class="tag"><i class="fas fa-code"></i> C++</span>
+                            <span class="tag exercises-count"><i class="fas fa-file-code"></i> 0 ejercicios</span>
                         </div>
-                        <button class="btn-primary" onclick="alert('Unidad 2 - Próximamente')">Ver Ejercicios</button>
+                        <button class="btn-primary" onclick="alert('Unidad 2 - Próximamente')">
+                            <i class="fas fa-play-circle"></i> Ver Ejercicios
+                        </button>
                     </div>
                     
                     <!-- Libro del Curso -->
                     <div class="project-card">
-                        <h4>Libro del Curso</h4>
+                        <h4><i class="fas fa-book-open"></i> Libro del Curso</h4>
                         <p>Material de lectura y consulta de la Unidad 2. Teoría y conceptos avanzados.</p>
                         <div class="project-tags">
-                            <span class="tag">PDF</span>
-                            <span class="tag">Teoría</span>
+                            <span class="tag"><i class="fas fa-file-pdf"></i> PDF</span>
+                            <span class="tag"><i class="fas fa-graduation-cap"></i> Teoría</span>
                         </div>
-                        <button class="btn-secondary" onclick="alert('Unidad 2 - Próximamente')">Gestionar Libro</button>
+                        <button class="btn-secondary" onclick="alert('Unidad 2 - Próximamente')">
+                            <i class="fas fa-cog"></i> Gestionar Libro
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- ==================== CONTACT SECTION ==================== -->
     <section id="contacto" class="contact">
         <div class="container">
             <h2 class="section-title">Contacto</h2>
@@ -153,44 +202,49 @@
             
             <div class="contact-grid">
                 <div class="contact-card">
-                    <h4>Nombre</h4>
+                    <h4><i class="fas fa-user-circle"></i> Nombre</h4>
                     <p>Dina Milagros Delgado Quispe</p>
                 </div>
                 <div class="contact-card">
-                    <h4>Email</h4>
+                    <h4><i class="fas fa-envelope"></i> Email</h4>
                     <p><a href="mailto:dmdq1804@gmail.com">dmdq1804@gmail.com</a></p>
                 </div>
                 <div class="contact-card">
-                    <h4>Universidad</h4>
+                    <h4><i class="fas fa-id-card"></i> Universidad</h4>
                     <p>Código: 247092</p>
                 </div>
                 <div class="contact-card">
-                    <h4>Ubicación</h4>
+                    <h4><i class="fas fa-map-marker-alt"></i> Ubicación</h4>
                     <p>Perú</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- ==================== FOOTER ==================== -->
     <footer>
         <div class="container">
             <p>&copy; 2026 Dina Milagros Delgado Quispe. Todos los derechos reservados.</p>
         </div>
     </footer>
 
-    <!-- Modal de Ejercicios -->
+    <!-- ==================== MODAL DE EJERCICIOS ==================== -->
     <div id="exercisesModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Actividades de Programación</h3>
+                <h3><i class="fas fa-code"></i> Actividades de Programación</h3>
                 <span class="close" onclick="closeExercises()">&times;</span>
             </div>
             <div class="modal-body">
-                <button class="btn-add" onclick="openAddExercise()">Agregar Nuevo Ejercicio</button>
+                <button class="btn-add" onclick="openAddExercise()">
+                    <i class="fas fa-plus-circle"></i> Agregar Nuevo Ejercicio
+                </button>
                 
                 <!-- Filtro por actividad -->
                 <div class="activity-filter">
-                    <button class="filter-btn active" onclick="filterActivity('all')">Todas</button>
+                    <button class="filter-btn active" onclick="filterActivity('all')">
+                        <i class="fas fa-th"></i> Todas
+                    </button>
                     <button class="filter-btn" onclick="filterActivity(1)">Actividad 1</button>
                     <button class="filter-btn" onclick="filterActivity(2)">Actividad 2</button>
                     <button class="filter-btn" onclick="filterActivity(3)">Actividad 3</button>
@@ -205,25 +259,25 @@
         </div>
     </div>
 
-    <!-- Modal Agregar Ejercicio -->
+    <!-- ==================== MODAL AGREGAR EJERCICIO ==================== -->
     <div id="addExerciseModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Agregar Ejercicio</h3>
+                <h3><i class="fas fa-plus-circle"></i> Agregar Ejercicio</h3>
                 <span class="close" onclick="closeAddExercise()">&times;</span>
             </div>
             <div class="modal-body">
                 <form id="addExerciseForm">
                     <div class="form-group">
-                        <label>Título del Ejercicio:</label>
-                        <input type="text" id="exerciseTitle" required>
+                        <label><i class="fas fa-heading"></i> Título del Ejercicio:</label>
+                        <input type="text" id="exerciseTitle" placeholder="Ej: Cálculo de área de círculo" required>
                     </div>
                     <div class="form-group">
-                        <label>Número de Ejercicio:</label>
-                        <input type="number" id="exerciseNumber" required>
+                        <label><i class="fas fa-hashtag"></i> Número de Ejercicio:</label>
+                        <input type="number" id="exerciseNumber" placeholder="Ej: 1" required>
                     </div>
                     <div class="form-group">
-                        <label>Actividad:</label>
+                        <label><i class="fas fa-folder"></i> Actividad:</label>
                         <select id="exerciseActivity" required>
                             <option value="1">Actividad 1</option>
                             <option value="2">Actividad 2</option>
@@ -235,42 +289,52 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Lenguaje:</label>
+                        <label><i class="fas fa-code"></i> Lenguaje:</label>
                         <select id="exerciseLanguage">
                             <option value="C">C</option>
                             <option value="C++">C++</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Código Fuente:</label>
-                        <textarea id="exerciseCode" rows="10" required></textarea>
+                        <label><i class="fas fa-file-code"></i> Código Fuente:</label>
+                        <textarea id="exerciseCode" rows="12" placeholder="Ingresa tu código aquí..." required></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Salida del Programa:</label>
-                        <textarea id="exerciseOutput" rows="5" required></textarea>
+                        <label><i class="fas fa-terminal"></i> Salida del Programa:</label>
+                        <textarea id="exerciseOutput" rows="6" placeholder="Resultado de la ejecución..." required></textarea>
                     </div>
                     <div class="form-buttons">
-                        <button type="submit" class="btn-primary">Guardar</button>
-                        <button type="button" class="btn-secondary" onclick="closeAddExercise()">Cancelar</button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="closeAddExercise()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal Libro -->
+    <!-- ==================== MODAL LIBRO ==================== -->
     <div id="bookModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Libro del Curso</h3>
+                <h3><i class="fas fa-book"></i> Libro del Curso</h3>
                 <span class="close" onclick="closeBook()">&times;</span>
             </div>
             <div class="modal-body">
                 <p>Gestiona el libro del curso en formato PDF</p>
                 <div class="book-buttons">
-                    <button class="btn-primary">Subir Libro (PDF)</button>
-                    <button class="btn-secondary">Ver Libro</button>
-                    <button class="btn-danger">Eliminar Libro</button>
+                    <button class="btn-primary">
+                        <i class="fas fa-upload"></i> Subir Libro (PDF)
+                    </button>
+                    <button class="btn-secondary">
+                        <i class="fas fa-eye"></i> Ver Libro
+                    </button>
+                    <button class="btn-danger">
+                        <i class="fas fa-trash"></i> Eliminar Libro
+                    </button>
                 </div>
             </div>
         </div>
