@@ -167,9 +167,9 @@
                         <div class="project-tags">
                             <span class="tag"><i class="fab fa-cuttlefish"></i> C</span>
                             <span class="tag"><i class="fas fa-code"></i> C++</span>
-                            <span class="tag exercises-count"><i class="fas fa-file-code"></i> 0 ejercicios</span>
+                            <span class="tag exercises-count-u2"><i class="fas fa-file-code"></i> 0 ejercicios</span>
                         </div>
-                        <button class="btn-primary" onclick="alert('Unidad 2 - Próximamente')">
+                        <button class="btn-primary" onclick="openExercises2()">
                             <i class="fas fa-play-circle"></i> Ver Ejercicios
                         </button>
                     </div>
@@ -181,7 +181,7 @@
                             <span class="tag"><i class="fas fa-file-pdf"></i> PDF</span>
                             <span class="tag"><i class="fas fa-graduation-cap"></i> Teoría</span>
                         </div>
-                        <button class="btn-secondary" onclick="alert('Unidad 2 - Próximamente')">
+                        <button class="btn-secondary" onclick="openBook2()">
                             <i class="fas fa-cog"></i> Gestionar Libro
                         </button>
                     </div>
@@ -203,7 +203,7 @@
                 </div>
                 <div class="contact-card">
                     <h4><i class="fas fa-envelope"></i> Email</h4>
-                    <p><a href="mailto:dmdq1804@gmail.com">dmdq1804@gmail.com</a></p>
+                    <p><a href="/cdn-cgi/l/email-protection#d9bdb4bda8e8e1e9ed99beb4b8b0b5f7bab6b4"><span class="__cf_email__" data-cfemail="bbdfd6dfca8a838b8ffbdcd6dad2d795d8d4d6">[email&#160;protected]</span></a></p>
                 </div>
                 <div class="contact-card">
                     <h4><i class="fas fa-id-card"></i> Universidad</h4>
@@ -311,6 +311,53 @@
         </div>
     </div>
 
+    <!-- MODAL EJERCICIOS UNIDAD 2 -->
+    <div id="exercisesModal2" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-code"></i> Actividades de Programación — Unidad 2</h3>
+                <span class="close" onclick="closeExercises2()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="activity-filter">
+                    <button class="filter-btn active" onclick="filterActivity2('all', event)">
+                        <i class="fas fa-th"></i> Todas
+                    </button>
+                    <button class="filter-btn" onclick="filterActivity2(1, event)">Actividad 1</button>
+                    <button class="filter-btn" onclick="filterActivity2(2, event)">Actividad 2</button>
+                    <button class="filter-btn" onclick="filterActivity2(3, event)">Actividad 3</button>
+                    <button class="filter-btn" onclick="filterActivity2(4, event)">Actividad 4</button>
+                    <button class="filter-btn" onclick="filterActivity2(5, event)">Actividad 5</button>
+                </div>
+                <div id="exercisesList2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LIBRO UNIDAD 2 -->
+    <div id="bookModal2" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-book"></i> Libro del Curso — Unidad 2</h3>
+                <span class="close" onclick="closeBook2()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Gestiona el libro de la Unidad 2 en formato PDF</p>
+                <div class="book-buttons book-buttons-u2">
+                    <button class="btn-primary" onclick="subirLibro2()">
+                        <i class="fas fa-upload"></i> Subir Libro (PDF)
+                    </button>
+                    <button class="btn-secondary" onclick="verLibro2()">
+                        <i class="fas fa-eye"></i> Ver Libro
+                    </button>
+                    <button class="btn-danger" onclick="eliminarLibro2()">
+                        <i class="fas fa-trash"></i> Eliminar Libro
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL LIBRO -->
     <div id="bookModal" class="modal">
         <div class="modal-content">
@@ -329,12 +376,4 @@
                     </button>
                     <button class="btn-danger" onclick="eliminarLibro()">
                         <i class="fas fa-trash"></i> Eliminar Libro
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+                    
