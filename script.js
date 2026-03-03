@@ -1250,31 +1250,7 @@ function subirLibro() {
 
 // Ver libro PDF
 function verLibro() {
-    const libroBase64 = localStorage.getItem('libroPDF');
-    const nombreLibro = localStorage.getItem('libroPDFNombre') || 'libro.pdf';
-    
-    if (!libroBase64) {
-        alert('❌ No hay ningún libro guardado');
-        return;
-    }
-    
-    // Abrir PDF en nueva pestaña
-    const newWindow = window.open();
-    newWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>${nombreLibro}</title>
-            <style>
-                body { margin: 0; padding: 0; overflow: hidden; }
-                iframe { width: 100%; height: 100vh; border: none; }
-            </style>
-        </head>
-        <body>
-            <iframe src="${libroBase64}"></iframe>
-        </body>
-        </html>
-    `);
+    window.open('https://milagros1804.github.io/2026_LP/libro_u1.pdf', '_blank');
 }
 
 // Eliminar libro PDF
@@ -1310,1431 +1286,157 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // UNIDAD 2 — BASE DE DATOS DE EJERCICIOS
 // ============================================================
 const ejerciciosDB2 = {
-    1: [ // ACTIVIDAD 1 — Análisis de Complejidad
-        {
-            numero: 1,
-            titulo: "Complejidad Temporal — Bucles Anidados O(n²)",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <ctime>
-using namespace std;
-
-int main() {
-    int n;
-    long long suma = 0, operaciones = 0;
-
-    cout << "Ingrese el valor de n: ";
-    cin >> n;
-
-    int** arr = new int*[n];
-    for (int i = 0; i < n; i++) arr[i] = new int[n];
-
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            arr[i][j] = i + j;
-
-    clock_t t0 = clock();
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++) { suma += arr[i][j]; operaciones++; }
-    clock_t t1 = clock();
-
-    double ms = ((double)(t1 - t0) / CLOCKS_PER_SEC) * 1000;
-    cout << "Suma: " << suma << " Operaciones: " << operaciones << endl;
-    cout << "Tiempo: " << ms << " ms" << endl;
-    cout << "Complejidad: O(n^2) => " << n << "x" << n << " = " << operaciones << " ops" << endl;
-
-    for (int i = 0; i < n; i++) delete[] arr[i];
-    delete[] arr;
-    return 0;
-}`,
-            salida: `Ingrese el valor de n: 100
-Suma: 990000 Operaciones: 10000
-Tiempo: 0.12 ms
-Complejidad: O(n^2) => 100x100 = 10000 ops`
-        },
-        {
-            numero: 2,
-            titulo: "Búsqueda Binaria — O(log n)",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <ctime>
-using namespace std;
-
-int busqueda_binaria(int arr[], int n, int x, int& comp) {
-    int izq = 0, der = n - 1;
-    while (izq <= der) {
-        int medio = izq + (der - izq) / 2;
-        comp++;
-        if (arr[medio] == x) return medio;
-        if (arr[medio] < x) izq = medio + 1;
-        else der = medio - 1;
-    }
-    return -1;
-}
-
-int main() {
-    int n = 1000000;
-    int* arr = new int[n];
-    for (int i = 0; i < n; i++) arr[i] = i + 1;
-
-    int x, comp = 0;
-    cout << "Arreglo de 1,000,000 elementos. Buscar: ";
-    cin >> x;
-
-    clock_t t0 = clock();
-    int res = busqueda_binaria(arr, n, x, comp);
-    clock_t t1 = clock();
-
-    double ms = ((double)(t1 - t0) / CLOCKS_PER_SEC) * 1000;
-    if (res != -1) cout << "Encontrado en posicion: " << res << endl;
-    else cout << "No encontrado" << endl;
-    cout << "Comparaciones: " << comp << " Tiempo: " << ms << " ms" << endl;
-    cout << "Complejidad: O(log n) => maximo ~20 comparaciones" << endl;
-
-    delete[] arr;
-    return 0;
-}`,
-            salida: `Arreglo de 1,000,000 elementos. Buscar: 500000
-Encontrado en posicion: 499999
-Comparaciones: 20 Tiempo: 0.00 ms
-Complejidad: O(log n) => maximo ~20 comparaciones`
-        },
-        {
-            numero: 3,
-            titulo: "Comparación de Tres Algoritmos O(1) vs O(n) vs O(n²)",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <ctime>
-using namespace std;
-
-int main() {
-    int n = 10000;
-    long long sumA = 0, sumB = 0, sumC = 0;
-
-    // Codigo A: O(n)
-    clock_t t0 = clock();
-    for (int i = 0; i < n; i++) sumA += i;
-    double tA = ((double)(clock() - t0) / CLOCKS_PER_SEC) * 1000;
-
-    // Codigo B: O(n^2)
-    t0 = clock();
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < i; j++) sumB += j;
-    double tB = ((double)(clock() - t0) / CLOCKS_PER_SEC) * 1000;
-
-    // Codigo C: O(1)
-    t0 = clock();
-    sumC = (long long)n * (n + 1) / 2;
-    double tC = ((double)(clock() - t0) / CLOCKS_PER_SEC) * 1000;
-
-    cout << "Codigo A: " << tA << " ms O(n) = " << n << " ops" << endl;
-    cout << "Codigo B: " << tB << " ms O(n^2) = " << (long long)n*(n-1)/2 << " ops" << endl;
-    cout << "Codigo C: " << tC << " ms O(1) = 1 op" << endl;
-    cout << "MAS EFICIENTE: Codigo C" << endl;
-    return 0;
-}`,
-            salida: `Codigo A: 0.05 ms O(n) = 10000 ops
-Codigo B: 185.20 ms O(n^2) = 49995000 ops
-Codigo C: 0.00 ms O(1) = 1 op
-MAS EFICIENTE: Codigo C`
-        },
-        {
-            numero: 4,
-            titulo: "Fibonacci Recursivo — O(2^n)",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <ctime>
-using namespace std;
-
-int fibonacci(int n, long long& llamadas) {
-    llamadas++;
-    if (n <= 1) return n;
-    return fibonacci(n-1, llamadas) + fibonacci(n-2, llamadas);
-}
-
-int main() {
-    int n;
-    cout << "Ingrese n: ";
-    cin >> n;
-
-    long long llamadas = 0;
-    clock_t t0 = clock();
-    int res = fibonacci(n, llamadas);
-    double ms = ((double)(clock() - t0) / CLOCKS_PER_SEC) * 1000;
-
-    cout << "Fibonacci(" << n << ") = " << res << endl;
-    cout << "Llamadas recursivas: " << llamadas << endl;
-    cout << "Tiempo: " << ms << " ms" << endl;
-    cout << "Complejidad: O(2^n) - Exponencial" << endl;
-    return 0;
-}`,
-            salida: `Ingrese n: 10
-Fibonacci(10) = 55
-Llamadas recursivas: 177
-Tiempo: 0.01 ms
-Complejidad: O(2^n) - Exponencial`
-        },
-        {
-            numero: 5,
-            titulo: "Eliminar Duplicados — Complejidad Temporal O(n²) y Espacial O(n)",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <ctime>
-using namespace std;
-
-int eliminar_duplicados(int arr[], int n) {
-    int temp[100];
-    int k = 0;
-    for (int i = 0; i < n; i++) {
-        int dup = 0;
-        for (int j = 0; j < k; j++)
-            if (arr[i] == temp[j]) { dup = 1; break; }
-        if (!dup) temp[k++] = arr[i];
-    }
-    return k;
-}
-
-int main() {
-    int n;
-    cout << "Tamano del arreglo: ";
-    cin >> n;
-    int* arr = new int[n];
-    for (int i = 0; i < n; i++) arr[i] = rand() % (n/2);
-
-    clock_t t0 = clock();
-    int k = eliminar_duplicados(arr, n);
-    double ms = ((double)(clock() - t0) / CLOCKS_PER_SEC) * 1000;
-
-    cout << "Elementos originales: " << n << " Unicos: " << k << endl;
-    cout << "Tiempo: " << ms << " ms" << endl;
-    cout << "Complejidad Temporal: O(n^2) Espacial: O(n)" << endl;
-
-    delete[] arr;
-    return 0;
-}`,
-            salida: `Tamano del arreglo: 20
-Elementos originales: 20 Unicos: 10
-Tiempo: 0.01 ms
-Complejidad Temporal: O(n^2) Espacial: O(n)`
-        },
-        {
-            numero: 6,
-            titulo: "Bucle Logarítmico — O(log n)",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <ctime>
-using namespace std;
-
-int main() {
-    int n;
-    cout << "Ingrese n: ";
-    cin >> n;
-
-    int count = 0;
-    clock_t t0 = clock();
-    for (int i = 1; i < n; i = i * 2) count++;
-    double ms = ((double)(clock() - t0) / CLOCKS_PER_SEC) * 1000;
-
-    cout << "n = " << n << " Iteraciones: " << count << endl;
-    cout << "Tiempo: " << ms << " ms" << endl;
-    cout << "Complejidad: O(log n) secuencia: 1,2,4,8,16..." << endl;
-    return 0;
-}`,
-            salida: `Ingrese n: 1024
-n = 1024 Iteraciones: 10
-Tiempo: 0.00 ms
-Complejidad: O(log n) secuencia: 1,2,4,8,16...`
-        },
-        {
-            numero: 7,
-            titulo: "Bubble Sort vs Quick Sort",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <ctime>
-using namespace std;
-
-void bubble_sort(int arr[], int n) {
-    for (int i = 0; i < n-1; i++)
-        for (int j = 0; j < n-i-1; j++)
-            if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j]=arr[j+1]; arr[j+1]=t; }
-}
-
-void quicksort(int arr[], int izq, int der) {
-    if (izq < der) {
-        int piv = arr[der], i = izq - 1;
-        for (int j = izq; j < der; j++)
-            if (arr[j] < piv) { i++; int t = arr[i]; arr[i]=arr[j]; arr[j]=t; }
-        int t = arr[i+1]; arr[i+1]=arr[der]; arr[der]=t;
-        int pi = i + 1;
-        quicksort(arr, izq, pi-1);
-        quicksort(arr, pi+1, der);
-    }
-}
-
-int main() {
-    int n = 10000;
-    int* a1 = new int[n]; int* a2 = new int[n];
-    for (int i = 0; i < n; i++) { a1[i] = rand()%10000; a2[i] = a1[i]; }
-
-    clock_t t0 = clock();
-    bubble_sort(a1, n);
-    double tB = ((double)(clock() - t0) / CLOCKS_PER_SEC)*1000;
-
-    t0 = clock();
-    quicksort(a2, 0, n-1);
-    double tQ = ((double)(clock() - t0) / CLOCKS_PER_SEC)*1000;
-
-    cout << "Bubble Sort: " << tB << " ms O(n^2)" << endl;
-    cout << "Quick Sort:  " << tQ << " ms O(n log n) promedio" << endl;
-
-    delete[] a1; delete[] a2;
-    return 0;
-}`,
-            salida: `Bubble Sort: 312.50 ms O(n^2)
-Quick Sort:  2.10 ms O(n log n) promedio`
-        },
-        {
-            numero: 8,
-            titulo: "Verificar Número Primo — O(√n)",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <ctime>
-using namespace std;
-
-int es_primo(int n) {
-    if (n < 2) return 0;
-    for (int i = 2; i * i <= n; i++)
-        if (n % i == 0) return 0;
-    return 1;
-}
-
-int main() {
-    int n;
-    cout << "Ingrese un numero: ";
-    cin >> n;
-
-    clock_t t0 = clock();
-    int res = es_primo(n);
-    double ms = ((double)(clock() - t0) / CLOCKS_PER_SEC) * 1000;
-
-    cout << n << (res ? " ES primo" : " NO es primo") << endl;
-    cout << "Tiempo: " << ms << " ms Complejidad: O(sqrt(n))" << endl;
-    return 0;
-}`,
-            salida: `Ingrese un numero: 97
-97 ES primo
-Tiempo: 0.00 ms Complejidad: O(sqrt(n))`
-        },
-        {
-            numero: 9,
-            titulo: "Multiplicación de Matrices — O(n³)",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <ctime>
-using namespace std;
-
-void multiplicar(int** A, int** B, int** C, int n) {
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++) {
-            C[i][j] = 0;
-            for (int k = 0; k < n; k++)
-                C[i][j] += A[i][k] * B[k][j];
-        }
-}
-
-int main() {
-    int n;
-    cout << "Tamano n: ";
-    cin >> n;
-
-    int** A = new int*[n]; int** B = new int*[n]; int** C = new int*[n];
-    for (int i=0; i<n; i++) { A[i]=new int[n]; B[i]=new int[n]; C[i]=new int[n]; }
-    for (int i=0; i<n; i++)
-        for (int j=0; j<n; j++) { A[i][j]=rand()%10; B[i][j]=rand()%10; }
-
-    clock_t t0 = clock();
-    multiplicar(A, B, C, n);
-    double ms = ((double)(clock() - t0) / CLOCKS_PER_SEC) * 1000;
-
-    cout << "Tiempo: " << ms << " ms Complejidad: O(n^3)" << endl;
-    cout << "Operaciones: " << (long long)n*n*n << endl;
-    cout << "Strassen reduce a O(n^2.807)" << endl;
-
-    for(int i=0; i<n; i++) { delete[] A[i]; delete[] B[i]; delete[] C[i]; }
-    delete[] A; delete[] B; delete[] C;
-    return 0;
-}`,
-            salida: `Tamano n: 100
-Tiempo: 8.50 ms Complejidad: O(n^3)
-Operaciones: 1000000
-Strassen reduce a O(n^2.807)`
-        },
-        {
-            numero: 10,
-            titulo: "Tabla de Complejidades por Estructura de Datos",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Operacion           | Array  | Lista  | Hash Table" << endl;
-    cout << "----------------------------------------------------" << endl;
-    cout << "Acceso por indice   | O(1)   | O(n)   | N/A       " << endl;
-    cout << "Busqueda            | O(n)   | O(n)   | O(1) prom " << endl;
-    cout << "Insercion al inicio | O(n)   | O(1)   | O(1) prom " << endl;
-    cout << "Insercion al final  | O(1)   | O(1)*  | O(1) prom " << endl;
-    cout << "Eliminacion         | O(n)   | O(n)   | O(1) prom " << endl;
-    cout << "* Con puntero al ultimo nodo" << endl;
-    return 0;
-}`,
-            salida: `Operacion           | Array  | Lista  | Hash Table
-----------------------------------------------------
-Acceso por indice   | O(1)   | O(n)   | N/A       
-Busqueda            | O(n)   | O(n)   | O(1) prom 
-Insercion al inicio | O(n)   | O(1)   | O(1) prom 
-Insercion al final  | O(1)   | O(1)*  | O(1) prom 
-Eliminacion         | O(n)   | O(n)   | O(1) prom 
-* Con puntero al ultimo nodo`
-        }
+    1: [
+        { numero: 1, titulo: "Complejidad Temporal — Bucles Anidados O(n²)", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <ctime>\nusing namespace std;\n\nint main() {\n    int n;\n    long long suma = 0, operaciones = 0;\n    cout << "Ingrese el valor de n: ";\n    cin >> n;\n    int** arr = new int*[n];\n    for (int i = 0; i < n; i++) arr[i] = new int[n];\n    for (int i = 0; i < n; i++)\n        for (int j = 0; j < n; j++)\n            arr[i][j] = i + j;\n    clock_t t0 = clock();\n    for (int i = 0; i < n; i++)\n        for (int j = 0; j < n; j++) { suma += arr[i][j]; operaciones++; }\n    clock_t t1 = clock();\n    double ms = ((double)(t1 - t0) / CLOCKS_PER_SEC) * 1000;\n    cout << "Suma: " << suma << " Operaciones: " << operaciones << endl;\n    cout << "Tiempo: " << ms << " ms" << endl;\n    cout << "Complejidad: O(n^2) => " << n << "x" << n << " = " << operaciones << " ops" << endl;\n    for (int i = 0; i < n; i++) delete[] arr[i];\n    delete[] arr;\n    return 0;\n}`,
+          salida: `Ingrese el valor de n: 100\nSuma: 990000 Operaciones: 10000\nTiempo: 0.12 ms\nComplejidad: O(n^2) => 100x100 = 10000 ops` },
+        { numero: 2, titulo: "Búsqueda Binaria — O(log n)", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <ctime>\nusing namespace std;\n\nint busqueda_binaria(int arr[], int n, int x, int& comp) {\n    int izq = 0, der = n - 1;\n    while (izq <= der) {\n        int medio = izq + (der - izq) / 2;\n        comp++;\n        if (arr[medio] == x) return medio;\n        if (arr[medio] < x) izq = medio + 1;\n        else der = medio - 1;\n    }\n    return -1;\n}\n\nint main() {\n    int n = 1000000;\n    int* arr = new int[n];\n    for (int i = 0; i < n; i++) arr[i] = i + 1;\n    int x, comp = 0;\n    cout << "Arreglo de 1,000,000 elementos. Buscar: ";\n    cin >> x;\n    int res = busqueda_binaria(arr, n, x, comp);\n    if (res != -1) cout << "Encontrado en posicion: " << res << endl;\n    else cout << "No encontrado" << endl;\n    cout << "Comparaciones: " << comp << endl;\n    cout << "Complejidad: O(log n) => maximo ~20 comparaciones" << endl;\n    delete[] arr;\n    return 0;\n}`,
+          salida: `Arreglo de 1,000,000 elementos. Buscar: 500000\nEncontrado en posicion: 499999\nComparaciones: 20\nComplejidad: O(log n) => maximo ~20 comparaciones` },
+        { numero: 3, titulo: "Comparación O(1) vs O(n) vs O(n²)", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <ctime>\nusing namespace std;\n\nint main() {\n    int n = 10000;\n    long long sumA = 0, sumB = 0, sumC = 0;\n    clock_t t0 = clock();\n    for (int i = 0; i < n; i++) sumA += i;\n    double tA = ((double)(clock() - t0) / CLOCKS_PER_SEC)*1000;\n    t0 = clock();\n    for (int i = 0; i < n; i++)\n        for (int j = 0; j < i; j++) sumB += j;\n    double tB = ((double)(clock() - t0) / CLOCKS_PER_SEC)*1000;\n    t0 = clock();\n    sumC = (long long)n * (n + 1) / 2;\n    double tC = ((double)(clock() - t0) / CLOCKS_PER_SEC)*1000;\n    cout << "Codigo A: " << tA << " ms O(n)" << endl;\n    cout << "Codigo B: " << tB << " ms O(n^2)" << endl;\n    cout << "Codigo C: " << tC << " ms O(1)" << endl;\n    cout << "MAS EFICIENTE: Codigo C" << endl;\n    return 0;\n}`,
+          salida: `Codigo A: 0.05 ms O(n)\nCodigo B: 185.20 ms O(n^2)\nCodigo C: 0.00 ms O(1)\nMAS EFICIENTE: Codigo C` },
+        { numero: 4, titulo: "Fibonacci Recursivo — O(2^n)", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <ctime>\nusing namespace std;\n\nint fibonacci(int n, long long& llamadas) {\n    llamadas++;\n    if (n <= 1) return n;\n    return fibonacci(n-1, llamadas) + fibonacci(n-2, llamadas);\n}\n\nint main() {\n    int n;\n    cout << "Ingrese n: ";\n    cin >> n;\n    long long llamadas = 0;\n    clock_t t0 = clock();\n    int res = fibonacci(n, llamadas);\n    double ms = ((double)(clock() - t0) / CLOCKS_PER_SEC)*1000;\n    cout << "Fibonacci(" << n << ") = " << res << endl;\n    cout << "Llamadas recursivas: " << llamadas << endl;\n    cout << "Tiempo: " << ms << " ms" << endl;\n    cout << "Complejidad: O(2^n) - Exponencial" << endl;\n    return 0;\n}`,
+          salida: `Ingrese n: 10\nFibonacci(10) = 55\nLlamadas recursivas: 177\nTiempo: 0.01 ms\nComplejidad: O(2^n) - Exponencial` },
+        { numero: 5, titulo: "Eliminar Duplicados — O(n²) temporal, O(n) espacial", lenguaje: "C++",
+          codigo: `#include <iostream>\nusing namespace std;\n\nint eliminar_duplicados(int arr[], int n) {\n    int temp[100], k = 0;\n    for (int i = 0; i < n; i++) {\n        int dup = 0;\n        for (int j = 0; j < k; j++)\n            if (arr[i] == temp[j]) { dup = 1; break; }\n        if (!dup) temp[k++] = arr[i];\n    }\n    return k;\n}\n\nint main() {\n    int arr[] = {1,2,3,2,1,4,3,5};\n    int n = 8;\n    int k = eliminar_duplicados(arr, n);\n    cout << "Elementos originales: " << n << " Unicos: " << k << endl;\n    cout << "Complejidad Temporal: O(n^2) Espacial: O(n)" << endl;\n    return 0;\n}`,
+          salida: `Elementos originales: 8 Unicos: 5\nComplejidad Temporal: O(n^2) Espacial: O(n)` },
+        { numero: 6, titulo: "Bucle Logarítmico — O(log n)", lenguaje: "C++",
+          codigo: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cout << "Ingrese n: ";\n    cin >> n;\n    int count = 0;\n    for (int i = 1; i < n; i = i * 2) count++;\n    cout << "n = " << n << " Iteraciones: " << count << endl;\n    cout << "Complejidad: O(log n) secuencia: 1,2,4,8,16..." << endl;\n    return 0;\n}`,
+          salida: `Ingrese n: 1024\nn = 1024 Iteraciones: 10\nComplejidad: O(log n) secuencia: 1,2,4,8,16...` },
+        { numero: 7, titulo: "Bubble Sort vs Quick Sort", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <ctime>\nusing namespace std;\n\nvoid bubble_sort(int arr[], int n) {\n    for (int i = 0; i < n-1; i++)\n        for (int j = 0; j < n-i-1; j++)\n            if (arr[j] > arr[j+1]) { int t=arr[j]; arr[j]=arr[j+1]; arr[j+1]=t; }\n}\n\nvoid quicksort(int arr[], int izq, int der) {\n    if (izq < der) {\n        int piv=arr[der], i=izq-1;\n        for (int j=izq; j<der; j++)\n            if (arr[j]<piv) { i++; int t=arr[i]; arr[i]=arr[j]; arr[j]=t; }\n        int t=arr[i+1]; arr[i+1]=arr[der]; arr[der]=t;\n        int pi=i+1;\n        quicksort(arr,izq,pi-1);\n        quicksort(arr,pi+1,der);\n    }\n}\n\nint main() {\n    int n=10000;\n    int* a1=new int[n]; int* a2=new int[n];\n    for (int i=0;i<n;i++){a1[i]=rand()%10000;a2[i]=a1[i];}\n    clock_t t0=clock();\n    bubble_sort(a1,n);\n    double tB=((double)(clock()-t0)/CLOCKS_PER_SEC)*1000;\n    t0=clock();\n    quicksort(a2,0,n-1);\n    double tQ=((double)(clock()-t0)/CLOCKS_PER_SEC)*1000;\n    cout << "Bubble Sort: " << tB << " ms O(n^2)" << endl;\n    cout << "Quick Sort:  " << tQ << " ms O(n log n)" << endl;\n    delete[] a1; delete[] a2;\n    return 0;\n}`,
+          salida: `Bubble Sort: 312.50 ms O(n^2)\nQuick Sort:  2.10 ms O(n log n)` },
+        { numero: 8, titulo: "Número Primo — O(√n)", lenguaje: "C++",
+          codigo: `#include <iostream>\nusing namespace std;\n\nint es_primo(int n) {\n    if (n < 2) return 0;\n    for (int i = 2; i * i <= n; i++)\n        if (n % i == 0) return 0;\n    return 1;\n}\n\nint main() {\n    int n;\n    cout << "Ingrese un numero: ";\n    cin >> n;\n    cout << n << (es_primo(n) ? " ES primo" : " NO es primo") << endl;\n    cout << "Complejidad: O(sqrt(n))" << endl;\n    return 0;\n}`,
+          salida: `Ingrese un numero: 97\n97 ES primo\nComplejidad: O(sqrt(n))` },
+        { numero: 9, titulo: "Multiplicación de Matrices — O(n³)", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <ctime>\nusing namespace std;\n\nvoid multiplicar(int** A, int** B, int** C, int n) {\n    for (int i=0;i<n;i++)\n        for (int j=0;j<n;j++) {\n            C[i][j]=0;\n            for (int k=0;k<n;k++)\n                C[i][j]+=A[i][k]*B[k][j];\n        }\n}\n\nint main() {\n    int n; cout << "Tamano n: "; cin >> n;\n    int** A=new int*[n]; int** B=new int*[n]; int** C=new int*[n];\n    for (int i=0;i<n;i++){A[i]=new int[n];B[i]=new int[n];C[i]=new int[n];}\n    for (int i=0;i<n;i++)\n        for (int j=0;j<n;j++){A[i][j]=rand()%10;B[i][j]=rand()%10;}\n    clock_t t0=clock();\n    multiplicar(A,B,C,n);\n    double ms=((double)(clock()-t0)/CLOCKS_PER_SEC)*1000;\n    cout << "Tiempo: " << ms << " ms Complejidad: O(n^3)" << endl;\n    cout << "Operaciones: " << (long long)n*n*n << endl;\n    for(int i=0;i<n;i++){delete[]A[i];delete[]B[i];delete[]C[i];}\n    delete[]A;delete[]B;delete[]C;\n    return 0;\n}`,
+          salida: `Tamano n: 100\nTiempo: 8.50 ms Complejidad: O(n^3)\nOperaciones: 1000000` },
+        { numero: 10, titulo: "Tabla de Complejidades por Estructura de Datos", lenguaje: "C++",
+          codigo: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Operacion           | Array  | Lista  | Hash Table" << endl;\n    cout << "----------------------------------------------------" << endl;\n    cout << "Acceso por indice   | O(1)   | O(n)   | N/A       " << endl;\n    cout << "Busqueda            | O(n)   | O(n)   | O(1) prom " << endl;\n    cout << "Insercion al inicio | O(n)   | O(1)   | O(1) prom " << endl;\n    cout << "Insercion al final  | O(1)   | O(1)*  | O(1) prom " << endl;\n    cout << "Eliminacion         | O(n)   | O(n)   | O(1) prom " << endl;\n    return 0;\n}`,
+          salida: `Operacion           | Array  | Lista  | Hash Table\n----------------------------------------------------\nAcceso por indice   | O(1)   | O(n)   | N/A       \nBusqueda            | O(n)   | O(n)   | O(1) prom \nInsercion al inicio | O(n)   | O(1)   | O(1) prom \nInsercion al final  | O(1)   | O(1)*  | O(1) prom \nEliminacion         | O(n)   | O(n)   | O(1) prom` }
     ],
-    2: [ // ACTIVIDAD 2 — Manejo de Archivos
-        {
-            numero: 11,
-            titulo: "Sistema de Registro de Temperaturas",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-#include <iomanip>
-using namespace std;
-
-int main() {
-    float temperaturas[5];
-    float suma = 0, promedio, maxima, minima;
-
-    cout << "=== REGISTRO DE TEMPERATURAS ===" << endl;
-    for (int i = 0; i < 5; i++) {
-        cout << "Temperatura " << (i+1) << ": ";
-        cin >> temperaturas[i];
-    }
-
-    ofstream fw("temperaturas.txt");
-    fw << "MEDICIONES:" << endl;
-    for (int i = 0; i < 5; i++)
-        fw << fixed << setprecision(1) << temperaturas[i] << endl;
-    fw.close();
-
-    ifstream fr("temperaturas.txt");
-    string linea;
-    getline(fr, linea);
-    float temp; int count = 0;
-    maxima = -999; minima = 999;
-    while (fr >> temp) {
-        suma += temp; count++;
-        if (temp > maxima) maxima = temp;
-        if (temp < minima) minima = temp;
-    }
-    fr.close();
-    promedio = suma / count;
-
-    ofstream fa("temperaturas.txt", ios::app);
-    fa << "\\nESTADISTICAS:" << endl;
-    fa << fixed << setprecision(2);
-    fa << "Promedio: " << promedio << endl;
-    fa << "Maxima: " << maxima << endl;
-    fa << "Minima: " << minima << endl;
-    fa.close();
-
-    cout << fixed << setprecision(2);
-    cout << "Promedio: " << promedio << " C" << endl;
-    cout << "Maxima: " << maxima << " C" << endl;
-    cout << "Minima: " << minima << " C" << endl;
-    return 0;
-}`,
-            salida: `=== REGISTRO DE TEMPERATURAS ===
-Temperatura 1: 23.5
-Temperatura 2: 25.1
-Temperatura 3: 24.8
-Temperatura 4: 26.2
-Temperatura 5: 23.9
-Promedio: 24.70 C
-Maxima: 26.20 C
-Minima: 23.50 C`
-        },
-        {
-            numero: 12,
-            titulo: "Base de Datos de Productos (archivo binario)",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <cstring>
-using namespace std;
-
-struct Producto { int codigo; char nombre[30]; float precio; int stock; };
-
-void agregar() {
-    Producto p;
-    cout << "Codigo: "; cin >> p.codigo; cin.ignore();
-    cout << "Nombre: "; cin.getline(p.nombre, 30);
-    cout << "Precio: "; cin >> p.precio;
-    cout << "Stock: "; cin >> p.stock;
-    ofstream f("productos.dat", ios::binary | ios::app);
-    f.write(reinterpret_cast<char*>(&p), sizeof(Producto));
-    f.close();
-    cout << "Producto agregado!" << endl;
-}
-
-void listar() {
-    Producto p;
-    ifstream f("productos.dat", ios::binary);
-    if (!f) { cout << "Sin productos." << endl; return; }
-    cout << left << setw(8) << "Cod" << setw(22) << "Nombre"
-         << setw(10) << "Precio" << "Stock" << endl;
-    cout << string(50, '-') << endl;
-    while (f.read(reinterpret_cast<char*>(&p), sizeof(Producto)))
-        cout << left << setw(8) << p.codigo << setw(22) << p.nombre
-             << setw(10) << fixed << setprecision(2) << p.precio
-             << p.stock << endl;
-    f.close();
-}
-
-int main() {
-    int op;
-    do {
-        cout << "\\n1. Agregar 2. Listar 3. Buscar 4. Actualizar 5. Salir\\nOpcion: ";
-        cin >> op;
-        if (op==1) agregar();
-        else if (op==2) listar();
-    } while (op != 5);
-    return 0;
-}`,
-            salida: `1. Agregar 2. Listar 3. Buscar 4. Actualizar 5. Salir
-Opcion: 1
-Codigo: 101
-Nombre: Laptop
-Precio: 2500.00
-Stock: 10
-Producto agregado!
-
-Opcion: 2
-Cod     Nombre                Precio    Stock
---------------------------------------------------
-101     Laptop                2500.00   10`
-        },
-        {
-            numero: 13,
-            titulo: "Lectura de 100 Archivos — Promedio de Edades",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-
-int main() {
-    FILE* f;
-    int edad, suma = 0;
-    char nombre[50];
-
-    for (int i = 1; i <= 100; i++) {
-        sprintf(nombre, "alumnos_data/alumno_%d.txt", i);
-        f = fopen(nombre, "r");
-        fscanf(f, "%d", &edad);
-        printf("archivo %s edad: %d\\n", nombre, edad);
-        suma += edad;
-        fclose(f);
-    }
-
-    printf("Promedio: %.2f\\n", (float)suma / 100);
-    return 0;
-}`,
-            salida: `archivo alumnos_data/alumno_1.txt edad: 18
-archivo alumnos_data/alumno_2.txt edad: 20
-archivo alumnos_data/alumno_3.txt edad: 19
-...
-archivo alumnos_data/alumno_100.txt edad: 21
-Promedio: 19.85`
-        },
-        {
-            numero: 14,
-            titulo: "Lectura de Archivos por Bloques de 10",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-
-int main() {
-    int edad, suma;
-
-    for (int bloque = 1; bloque <= 10; bloque++) {
-        suma = 0;
-        printf("BLOQUE %d:\\n", bloque);
-
-        for (int j = (bloque-1)*10 + 1; j <= bloque*10; j++) {
-            char nombre[30];
-            sprintf(nombre, "alumnos_data/alumno_%d.txt", j);
-            FILE* f = fopen(nombre, "r");
-            if (f && fscanf(f, "%d", &edad) == 1) {
-                printf("Alumno %d: %d\\n", j, edad);
-                suma += edad;
-            }
-            if (f) fclose(f);
-        }
-        printf("Promedio del bloque: %.2f\\n\\n", suma / 10.0);
-    }
-    printf("Elaborado por: Dina\\n");
-    return 0;
-}`,
-            salida: `BLOQUE 1:
-Alumno 1: 18
-Alumno 2: 20
-...
-Alumno 10: 19
-Promedio del bloque: 19.30
-
-BLOQUE 2:
-...
-Elaborado por: Dina`
-        }
+    2: [
+        { numero: 11, titulo: "Sistema de Registro de Temperaturas", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    float temperaturas[5], suma=0, promedio, maxima, minima;\n    cout << "=== REGISTRO DE TEMPERATURAS ===" << endl;\n    for (int i=0;i<5;i++) { cout<<"Temperatura "<<(i+1)<<": "; cin>>temperaturas[i]; }\n    ofstream fw("temperaturas.txt");\n    fw << "MEDICIONES:" << endl;\n    for (int i=0;i<5;i++) fw<<fixed<<setprecision(1)<<temperaturas[i]<<endl;\n    fw.close();\n    ifstream fr("temperaturas.txt"); string linea; getline(fr,linea);\n    float temp; int count=0; maxima=-999; minima=999;\n    while (fr>>temp){suma+=temp;count++;if(temp>maxima)maxima=temp;if(temp<minima)minima=temp;}\n    fr.close(); promedio=suma/count;\n    cout<<fixed<<setprecision(2);\n    cout<<"Promedio: "<<promedio<<" C"<<endl;\n    cout<<"Maxima: "<<maxima<<" C"<<endl;\n    cout<<"Minima: "<<minima<<" C"<<endl;\n    return 0;\n}`,
+          salida: `=== REGISTRO DE TEMPERATURAS ===\nTemperatura 1: 23.5\nTemperatura 2: 25.1\nTemperatura 3: 24.8\nTemperatura 4: 26.2\nTemperatura 5: 23.9\nPromedio: 24.70 C\nMaxima: 26.20 C\nMinima: 23.50 C` },
+        { numero: 12, titulo: "Base de Datos de Productos (archivo binario)", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\n#include <iomanip>\nusing namespace std;\nstruct Producto { int codigo; char nombre[30]; float precio; int stock; };\nvoid listar() {\n    Producto p; ifstream f("productos.dat",ios::binary);\n    if(!f){cout<<"Sin productos."<<endl;return;}\n    cout<<left<<setw(8)<<"Cod"<<setw(22)<<"Nombre"<<setw(10)<<"Precio"<<"Stock"<<endl;\n    cout<<string(50,'-')<<endl;\n    while(f.read(reinterpret_cast<char*>(&p),sizeof(Producto)))\n        cout<<left<<setw(8)<<p.codigo<<setw(22)<<p.nombre<<setw(10)<<fixed<<setprecision(2)<<p.precio<<p.stock<<endl;\n    f.close();\n}\nint main() { listar(); return 0; }`,
+          salida: `Cod     Nombre                Precio    Stock\n--------------------------------------------------\n101     Laptop                2500.00   10` },
+        { numero: 13, titulo: "Lectura de 100 Archivos — Promedio de Edades", lenguaje: "C",
+          codigo: `#include <stdio.h>\nint main() {\n    FILE* f; int edad, suma=0; char nombre[50];\n    for (int i=1;i<=100;i++) {\n        sprintf(nombre,"alumnos_data/alumno_%d.txt",i);\n        f=fopen(nombre,"r");\n        if(f){fscanf(f,"%d",&edad);suma+=edad;fclose(f);}\n    }\n    printf("Promedio: %.2f\\n",(float)suma/100);\n    return 0;\n}`,
+          salida: `Promedio: 19.85` },
+        { numero: 14, titulo: "Lectura de Archivos por Bloques de 10", lenguaje: "C",
+          codigo: `#include <stdio.h>\nint main() {\n    int edad,suma;\n    for (int bloque=1;bloque<=10;bloque++) {\n        suma=0; printf("BLOQUE %d:\\n",bloque);\n        for (int j=(bloque-1)*10+1;j<=bloque*10;j++) {\n            char nombre[30];\n            sprintf(nombre,"alumnos_data/alumno_%d.txt",j);\n            FILE* f=fopen(nombre,"r");\n            if(f&&fscanf(f,"%d",&edad)==1){printf("Alumno %d: %d\\n",j,edad);suma+=edad;}\n            if(f)fclose(f);\n        }\n        printf("Promedio del bloque: %.2f\\n\\n",suma/10.0);\n    }\n    printf("Elaborado por: Dina\\n");\n    return 0;\n}`,
+          salida: `BLOQUE 1:\nAlumno 1: 18\n...\nPromedio del bloque: 19.30\n\nElaborado por: Dina` }
     ],
-    3: [ // ACTIVIDAD 3 — Manejo de Múltiples Archivos
-        {
-            numero: 15,
-            titulo: "Registro de Ventas Diarias",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-#include <iomanip>
-using namespace std;
-
-int main() {
-    ofstream archivo;
-    char nombre[30];
-    float ventas[] = {1500.50, 2300.75, 1800.00};
-
-    for (int dia = 1; dia <= 3; dia++) {
-        sprintf(nombre, "venta_dia_%d.txt", dia);
-        archivo.open(nombre);
-        archivo << fixed << setprecision(2) << ventas[dia-1] << endl;
-        archivo.close();
-    }
-
-    cout << "3 archivos de ventas creados" << endl;
-    return 0;
-}`,
-            salida: `3 archivos de ventas creados`
-        },
-        {
-            numero: 16,
-            titulo: "Total de Ventas desde Múltiples Archivos",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-#include <iomanip>
-using namespace std;
-
-int main() {
-    ifstream archivo;
-    char nombre[30];
-    float venta, total = 0;
-
-    for (int dia = 1; dia <= 3; dia++) {
-        sprintf(nombre, "venta_dia_%d.txt", dia);
-        archivo.open(nombre);
-        archivo >> venta;
-        total += venta;
-        archivo.close();
-    }
-
-    cout << fixed << setprecision(2);
-    cout << "Total de ventas: " << total << endl;
-    return 0;
-}`,
-            salida: `Total de ventas: 5600.25`
-        },
-        {
-            numero: 17,
-            titulo: "Temperaturas por Hora en Archivos Separados",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-#include <iomanip>
-using namespace std;
-
-int main() {
-    ofstream archivo;
-    char nombre[30];
-    float temps[] = {18.5, 19.2, 20.1, 21.5};
-
-    for (int h = 0; h < 4; h++) {
-        sprintf(nombre, "temp_hora_%d.txt", h);
-        archivo.open(nombre);
-        archivo << "Hora " << h << ": " << fixed << setprecision(1)
-                << temps[h] << "C" << endl;
-        archivo.close();
-    }
-
-    cout << "Temperaturas guardadas" << endl;
-    return 0;
-}`,
-            salida: `Temperaturas guardadas`
-        },
-        {
-            numero: 18,
-            titulo: "Temperatura Máxima del Día",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-#include <iomanip>
-using namespace std;
-
-int main() {
-    ifstream archivo;
-    char nombre[30], buffer[20];
-    int hora_actual, hora_max = 0;
-    float temp, temp_max = -999;
-
-    for (int h = 0; h < 4; h++) {
-        sprintf(nombre, "temp_hora_%d.txt", h);
-        archivo.open(nombre);
-        archivo >> buffer >> hora_actual >> buffer >> temp;
-        if (temp > temp_max) { temp_max = temp; hora_max = hora_actual; }
-        archivo.close();
-    }
-
-    cout << fixed << setprecision(1);
-    cout << "Hora mas calurosa: " << hora_max
-         << " (" << temp_max << "C)" << endl;
-    return 0;
-}`,
-            salida: `Hora mas calurosa: 3 (21.5C)`
-        },
-        {
-            numero: 19,
-            titulo: "Logs de Errores por Tipo (append)",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-using namespace std;
-
-void registrar_error(const char* tipo, const char* mensaje) {
-    ofstream archivo;
-    char nombre[40];
-    sprintf(nombre, "log_%s.txt", tipo);
-    archivo.open(nombre, ios::app);
-    archivo << mensaje << endl;
-    archivo.close();
-}
-
-int main() {
-    registrar_error("red", "Conexion perdida");
-    registrar_error("disco", "Espacio insuficiente");
-    registrar_error("red", "Timeout en servidor");
-    cout << "Errores registrados" << endl;
-    return 0;
-}`,
-            salida: `Errores registrados`
-        },
-        {
-            numero: 20,
-            titulo: "Contar Errores en Archivo de Log",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-using namespace std;
-
-int main() {
-    ifstream archivo("log_red.txt");
-    string linea;
-    int contador = 0;
-
-    while (getline(archivo, linea)) contador++;
-    archivo.close();
-
-    cout << "Errores de red: " << contador << endl;
-    return 0;
-}`,
-            salida: `Errores de red: 2`
-        },
-        {
-            numero: 21,
-            titulo: "Backup de Archivo",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-using namespace std;
-
-int main() {
-    ifstream origen("datos.txt");
-    ofstream destino("datos_backup.txt");
-    char c;
-
-    while (origen.get(c)) destino.put(c);
-
-    origen.close(); destino.close();
-    cout << "Backup completado" << endl;
-    return 0;
-}`,
-            salida: `Backup completado`
-        },
-        {
-            numero: 22,
-            titulo: "Filtrar Temperaturas Mayores a 20°C",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-#include <iomanip>
-using namespace std;
-
-int main() {
-    ifstream entrada("todas_temps.txt");
-    ofstream salida("temps_altas.txt");
-    float temp;
-
-    while (entrada >> temp)
-        if (temp > 20.0)
-            salida << fixed << setprecision(1) << temp << endl;
-
-    entrada.close(); salida.close();
-    cout << "Filtrado completado" << endl;
-    return 0;
-}`,
-            salida: `Filtrado completado`
-        },
-        {
-            numero: 23,
-            titulo: "Consolidar Reportes de Sucursales",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-using namespace std;
-
-int main() {
-    ifstream entrada;
-    ofstream salida("reporte_total.txt");
-    char nombre[30];
-    string linea;
-
-    for (int s = 1; s <= 3; s++) {
-        sprintf(nombre, "sucursal_%d.txt", s);
-        entrada.open(nombre);
-        while (getline(entrada, linea)) salida << linea << endl;
-        entrada.close();
-    }
-
-    salida.close();
-    cout << "Reportes consolidados" << endl;
-    return 0;
-}`,
-            salida: `Reportes consolidados`
-        },
-        {
-            numero: 24,
-            titulo: "Procesar CSV de Calificaciones",
-            lenguaje: "C++",
-            codigo: `#include <iostream>
-#include <fstream>
-#include <iomanip>
-using namespace std;
-
-int main() {
-    ifstream archivo("notas.csv");
-    char nombre[50];
-    float n1, n2, n3;
-    string linea;
-
-    getline(archivo, linea); // saltar encabezado
-
-    while (archivo.getline(nombre, 50, ',')) {
-        char c;
-        archivo >> n1 >> c >> n2 >> c >> n3;
-        archivo.ignore();
-        cout << nombre << ": " << fixed << setprecision(2)
-             << (n1 + n2 + n3) / 3 << endl;
-    }
-
-    archivo.close();
-    return 0;
-}`,
-            salida: `Carlos: 15.67
-Maria: 18.33
-Pedro: 13.00
-Lucia: 17.67`
-        }
+    3: [
+        { numero: 15, titulo: "Registro de Ventas Diarias", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\n#include <iomanip>\nusing namespace std;\nint main() {\n    ofstream archivo; char nombre[30];\n    float ventas[]={1500.50,2300.75,1800.00};\n    for(int dia=1;dia<=3;dia++){\n        sprintf(nombre,"venta_dia_%d.txt",dia);\n        archivo.open(nombre);\n        archivo<<fixed<<setprecision(2)<<ventas[dia-1]<<endl;\n        archivo.close();\n    }\n    cout<<"3 archivos de ventas creados"<<endl;\n    return 0;\n}`,
+          salida: `3 archivos de ventas creados` },
+        { numero: 16, titulo: "Total de Ventas desde Múltiples Archivos", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\n#include <iomanip>\nusing namespace std;\nint main() {\n    ifstream archivo; char nombre[30]; float venta,total=0;\n    for(int dia=1;dia<=3;dia++){\n        sprintf(nombre,"venta_dia_%d.txt",dia);\n        archivo.open(nombre); archivo>>venta; total+=venta; archivo.close();\n    }\n    cout<<fixed<<setprecision(2);\n    cout<<"Total de ventas: "<<total<<endl;\n    return 0;\n}`,
+          salida: `Total de ventas: 5600.25` },
+        { numero: 17, titulo: "Temperaturas por Hora en Archivos Separados", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\n#include <iomanip>\nusing namespace std;\nint main() {\n    ofstream archivo; char nombre[30];\n    float temps[]={18.5,19.2,20.1,21.5};\n    for(int h=0;h<4;h++){\n        sprintf(nombre,"temp_hora_%d.txt",h);\n        archivo.open(nombre);\n        archivo<<"Hora "<<h<<": "<<fixed<<setprecision(1)<<temps[h]<<"C"<<endl;\n        archivo.close();\n    }\n    cout<<"Temperaturas guardadas"<<endl;\n    return 0;\n}`,
+          salida: `Temperaturas guardadas` },
+        { numero: 18, titulo: "Temperatura Máxima del Día", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\nusing namespace std;\nint main() {\n    ifstream archivo; char nombre[30],buffer[20];\n    int hora_actual,hora_max=0; float temp,temp_max=-999;\n    for(int h=0;h<4;h++){\n        sprintf(nombre,"temp_hora_%d.txt",h);\n        archivo.open(nombre);\n        archivo>>buffer>>hora_actual>>buffer>>temp;\n        if(temp>temp_max){temp_max=temp;hora_max=hora_actual;}\n        archivo.close();\n    }\n    cout<<fixed; cout<<"Hora mas calurosa: "<<hora_max<<" ("<<temp_max<<"C)"<<endl;\n    return 0;\n}`,
+          salida: `Hora mas calurosa: 3 (21.5C)` },
+        { numero: 19, titulo: "Logs de Errores por Tipo", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\nusing namespace std;\nvoid registrar_error(const char* tipo,const char* mensaje){\n    ofstream archivo; char nombre[40];\n    sprintf(nombre,"log_%s.txt",tipo);\n    archivo.open(nombre,ios::app);\n    archivo<<mensaje<<endl; archivo.close();\n}\nint main(){\n    registrar_error("red","Conexion perdida");\n    registrar_error("disco","Espacio insuficiente");\n    registrar_error("red","Timeout en servidor");\n    cout<<"Errores registrados"<<endl;\n    return 0;\n}`,
+          salida: `Errores registrados` },
+        { numero: 20, titulo: "Contar Errores en Log", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\nusing namespace std;\nint main(){\n    ifstream archivo("log_red.txt");\n    string linea; int contador=0;\n    while(getline(archivo,linea)) contador++;\n    archivo.close();\n    cout<<"Errores de red: "<<contador<<endl;\n    return 0;\n}`,
+          salida: `Errores de red: 2` },
+        { numero: 21, titulo: "Backup de Archivo", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\nusing namespace std;\nint main(){\n    ifstream origen("datos.txt");\n    ofstream destino("datos_backup.txt");\n    char c;\n    while(origen.get(c)) destino.put(c);\n    origen.close(); destino.close();\n    cout<<"Backup completado"<<endl;\n    return 0;\n}`,
+          salida: `Backup completado` },
+        { numero: 22, titulo: "Filtrar Temperaturas Mayores a 20°C", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\n#include <iomanip>\nusing namespace std;\nint main(){\n    ifstream entrada("todas_temps.txt");\n    ofstream salida("temps_altas.txt");\n    float temp;\n    while(entrada>>temp)\n        if(temp>20.0) salida<<fixed<<setprecision(1)<<temp<<endl;\n    entrada.close(); salida.close();\n    cout<<"Filtrado completado"<<endl;\n    return 0;\n}`,
+          salida: `Filtrado completado` },
+        { numero: 23, titulo: "Consolidar Reportes de Sucursales", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\nusing namespace std;\nint main(){\n    ifstream entrada; ofstream salida("reporte_total.txt");\n    char nombre[30]; string linea;\n    for(int s=1;s<=3;s++){\n        sprintf(nombre,"sucursal_%d.txt",s);\n        entrada.open(nombre);\n        while(getline(entrada,linea)) salida<<linea<<endl;\n        entrada.close();\n    }\n    salida.close();\n    cout<<"Reportes consolidados"<<endl;\n    return 0;\n}`,
+          salida: `Reportes consolidados` },
+        { numero: 24, titulo: "Procesar CSV de Calificaciones", lenguaje: "C++",
+          codigo: `#include <iostream>\n#include <fstream>\n#include <iomanip>\nusing namespace std;\nint main(){\n    ifstream archivo("notas.csv");\n    char nombre[50]; float n1,n2,n3; string linea;\n    getline(archivo,linea);\n    while(archivo.getline(nombre,50,',')){\n        char c; archivo>>n1>>c>>n2>>c>>n3; archivo.ignore();\n        cout<<nombre<<": "<<fixed<<setprecision(2)<<(n1+n2+n3)/3<<endl;\n    }\n    archivo.close();\n    return 0;\n}`,
+          salida: `Carlos: 15.67\nMaria: 18.33\nPedro: 13.00\nLucia: 17.67` }
     ],
-    4: [ // ACTIVIDAD 4 — Estructuras (struct)
-        {
-            numero: 25,
-            titulo: "Ficha de Mascota con struct",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-#include <string.h>
-
-typedef struct {
-    char nombre[30];
-    char especie[20];
-    int edad;
-    float peso;
-} Mascota;
-
-int main() {
-    Mascota m1;
-    strcpy(m1.nombre, "Firulais");
-    strcpy(m1.especie, "Perro");
-    m1.edad = 3;
-    m1.peso = 8.5;
-
-    printf("Nombre: %s\\n", m1.nombre);
-    printf("Especie: %s\\n", m1.especie);
-    printf("Edad: %d anos\\n", m1.edad);
-    printf("Peso: %.2f kg\\n", m1.peso);
-    return 0;
-}`,
-            salida: `Nombre: Firulais
-Especie: Perro
-Edad: 3 anos
-Peso: 8.50 kg`
-        },
-        {
-            numero: 26,
-            titulo: "Registro de Temperatura — 3 registros con promedio",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-
-typedef struct {
-    int hora;
-    float temperatura;
-    char ciudad[20];
-} Registro;
-
-int main() {
-    Registro r[3] = {{8,15.2,"Puno"},{12,18.5,"Puno"},{18,16.8,"Puno"}};
-    float suma = 0;
-
-    for (int i = 0; i < 3; i++) {
-        printf("Hora %02d: %.1fC - %s\\n",
-               r[i].hora, r[i].temperatura, r[i].ciudad);
-        suma += r[i].temperatura;
-    }
-    printf("Promedio: %.2fC\\n", suma / 3);
-    return 0;
-}`,
-            salida: `Hora 08: 15.2C - Puno
-Hora 12: 18.5C - Puno
-Hora 18: 16.8C - Puno
-Promedio: 16.83C`
-        },
-        {
-            numero: 27,
-            titulo: "Salón de Clases — Promedio y Mejor Alumno",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-
-typedef struct { char nombre[30]; float nota; } Alumno;
-
-int main() {
-    Alumno s[5] = {{"Carlos",14.5},{"Maria",18.0},
-                   {"Pedro",12.0},{"Lucia",19.5},{"Juan",16.0}};
-    float suma = 0; int mejor = 0;
-
-    for (int i = 0; i < 5; i++) {
-        printf("%-10s: %.1f\\n", s[i].nombre, s[i].nota);
-        suma += s[i].nota;
-        if (s[i].nota > s[mejor].nota) mejor = i;
-    }
-    printf("Promedio del salon: %.2f\\n", suma / 5);
-    printf("Mejor alumno: %s con %.1f\\n", s[mejor].nombre, s[mejor].nota);
-    return 0;
-}`,
-            salida: `Carlos    : 14.5
-Maria     : 18.0
-Pedro     : 12.0
-Lucia     : 19.5
-Juan      : 16.0
-Promedio del salon: 16.00
-Mejor alumno: Lucia con 19.5`
-        },
-        {
-            numero: 28,
-            titulo: "Inventario con Stock Bajo",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-
-typedef struct { char nombre[30]; float precio; int stock; } Producto;
-
-int main() {
-    Producto inv[4] = {{"Cuaderno",5.50,50},{"Lapicero",1.20,8},
-                       {"Borrador",0.80,5},{"Regla 30cm",3.00,20}};
-    float total = 0;
-
-    for (int i = 0; i < 4; i++) {
-        printf("%-12s S/ %.2f Stock: %d\\n",
-               inv[i].nombre, inv[i].precio, inv[i].stock);
-        total += inv[i].precio * inv[i].stock;
-    }
-    printf("Valor total: S/ %.2f\\n", total);
-    printf("Productos con stock bajo:\\n");
-    for (int i = 0; i < 4; i++)
-        if (inv[i].stock < 10)
-            printf("%-12s Stock: %d\\n", inv[i].nombre, inv[i].stock);
-    return 0;
-}`,
-            salida: `Cuaderno     S/ 5.50 Stock: 50
-Lapicero     S/ 1.20 Stock: 8
-Borrador     S/ 0.80 Stock: 5
-Regla 30cm   S/ 3.00 Stock: 20
-Valor total: S/ 358.60
-Productos con stock bajo:
-Lapicero     Stock: 8
-Borrador     Stock: 5`
-        },
-        {
-            numero: 29,
-            titulo: "Boleta de Pago con Descuento AFP",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-
-typedef struct { char nombre[30]; int codigo; float sueldo_bruto; } Empleado;
-
-float calcular_neto(Empleado e) {
-    return e.sueldo_bruto * (1 - 0.13f);
-}
-
-void imprimir_boleta(Empleado e) {
-    float desc = e.sueldo_bruto * 0.13f;
-    float neto = calcular_neto(e);
-    printf("============================\\n");
-    printf("       BOLETA DE PAGO       \\n");
-    printf("============================\\n");
-    printf("Nombre      : %s\\n", e.nombre);
-    printf("Codigo      : %d\\n", e.codigo);
-    printf("Sueldo Bruto: S/ %.2f\\n", e.sueldo_bruto);
-    printf("Descuento AFP: S/ %.2f\\n", desc);
-    printf("Sueldo Neto : S/ %.2f\\n", neto);
-    printf("============================\\n");
-}
-
-int main() {
-    Empleado emp = {"Rosa Quispe", 1042, 2800.0};
-    imprimir_boleta(emp);
-    return 0;
-}`,
-            salida: `============================
-       BOLETA DE PAGO       
-============================
-Nombre      : Rosa Quispe
-Codigo      : 1042
-Sueldo Bruto: S/ 2800.00
-Descuento AFP: S/ 364.00
-Sueldo Neto : S/ 2436.00
-============================`
-        },
-        {
-            numero: 30,
-            titulo: "Sensores Guardados en Archivo de Texto",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-
-typedef struct { int id; char ubicacion[20]; float temperatura; float humedad; } Sensor;
-
-int main() {
-    Sensor s[3] = {{1,"Sala A",22.5,60.0},{2,"Sala B",25.1,55.0},
-                   {3,"Exterior",18.3,75.0}};
-
-    FILE* f = fopen("sensores.txt", "w");
-    for (int i = 0; i < 3; i++)
-        fprintf(f, "%d,%s,%.1f,%.1f\\n",
-                s[i].id, s[i].ubicacion, s[i].temperatura, s[i].humedad);
-    fclose(f);
-
-    Sensor r; float suma = 0; int n = 0;
-    f = fopen("sensores.txt", "r");
-    printf("%-4s %-12s %-6s %-8s\\n","ID","Ubicacion","Temp","Humedad");
-    printf("--------------------------------\\n");
-    while (fscanf(f, "%d,%[^,],%f,%f\\n",
-                  &r.id, r.ubicacion, &r.temperatura, &r.humedad) == 4) {
-        printf("%-4d %-12s %-6.1f %.1f%%\\n",
-               r.id, r.ubicacion, r.temperatura, r.humedad);
-        suma += r.temperatura; n++;
-    }
-    fclose(f);
-    printf("--------------------------------\\n");
-    printf("Temperatura promedio: %.2fC\\n", suma / n);
-    return 0;
-}`,
-            salida: `ID   Ubicacion    Temp   Humedad 
---------------------------------
-1    Sala A       22.5   60.0%
-2    Sala B       25.1   55.0%
-3    Exterior     18.3   75.0%
---------------------------------
-Temperatura promedio: 21.97C`
-        }
+    4: [
+        { numero: 25, titulo: "Ficha de Mascota con struct", lenguaje: "C",
+          codigo: `#include <stdio.h>\n#include <string.h>\ntypedef struct { char nombre[30]; char especie[20]; int edad; float peso; } Mascota;\nint main(){\n    Mascota m1;\n    strcpy(m1.nombre,"Firulais"); strcpy(m1.especie,"Perro");\n    m1.edad=3; m1.peso=8.5;\n    printf("Nombre: %s\\n",m1.nombre);\n    printf("Especie: %s\\n",m1.especie);\n    printf("Edad: %d anos\\n",m1.edad);\n    printf("Peso: %.2f kg\\n",m1.peso);\n    return 0;\n}`,
+          salida: `Nombre: Firulais\nEspecie: Perro\nEdad: 3 anos\nPeso: 8.50 kg` },
+        { numero: 26, titulo: "Registro de Temperatura — 3 registros con promedio", lenguaje: "C",
+          codigo: `#include <stdio.h>\ntypedef struct { int hora; float temperatura; char ciudad[20]; } Registro;\nint main(){\n    Registro r[3]={{8,15.2,"Puno"},{12,18.5,"Puno"},{18,16.8,"Puno"}};\n    float suma=0;\n    for(int i=0;i<3;i++){\n        printf("Hora %02d: %.1fC - %s\\n",r[i].hora,r[i].temperatura,r[i].ciudad);\n        suma+=r[i].temperatura;\n    }\n    printf("Promedio: %.2fC\\n",suma/3);\n    return 0;\n}`,
+          salida: `Hora 08: 15.2C - Puno\nHora 12: 18.5C - Puno\nHora 18: 16.8C - Puno\nPromedio: 16.83C` },
+        { numero: 27, titulo: "Salón de Clases — Promedio y Mejor Alumno", lenguaje: "C",
+          codigo: `#include <stdio.h>\ntypedef struct { char nombre[30]; float nota; } Alumno;\nint main(){\n    Alumno s[5]={{"Carlos",14.5},{"Maria",18.0},{"Pedro",12.0},{"Lucia",19.5},{"Juan",16.0}};\n    float suma=0; int mejor=0;\n    for(int i=0;i<5;i++){\n        printf("%-10s: %.1f\\n",s[i].nombre,s[i].nota);\n        suma+=s[i].nota;\n        if(s[i].nota>s[mejor].nota) mejor=i;\n    }\n    printf("Promedio del salon: %.2f\\n",suma/5);\n    printf("Mejor alumno: %s con %.1f\\n",s[mejor].nombre,s[mejor].nota);\n    return 0;\n}`,
+          salida: `Carlos    : 14.5\nMaria     : 18.0\nPedro     : 12.0\nLucia     : 19.5\nJuan      : 16.0\nPromedio del salon: 16.00\nMejor alumno: Lucia con 19.5` },
+        { numero: 28, titulo: "Inventario con Stock Bajo", lenguaje: "C",
+          codigo: `#include <stdio.h>\ntypedef struct { char nombre[30]; float precio; int stock; } Producto;\nint main(){\n    Producto inv[4]={{"Cuaderno",5.50,50},{"Lapicero",1.20,8},{"Borrador",0.80,5},{"Regla 30cm",3.00,20}};\n    float total=0;\n    for(int i=0;i<4;i++){\n        printf("%-12s S/ %.2f Stock: %d\\n",inv[i].nombre,inv[i].precio,inv[i].stock);\n        total+=inv[i].precio*inv[i].stock;\n    }\n    printf("Valor total: S/ %.2f\\n",total);\n    printf("Productos con stock bajo:\\n");\n    for(int i=0;i<4;i++)\n        if(inv[i].stock<10) printf("%-12s Stock: %d\\n",inv[i].nombre,inv[i].stock);\n    return 0;\n}`,
+          salida: `Cuaderno     S/ 5.50 Stock: 50\nLapicero     S/ 1.20 Stock: 8\nBorrador     S/ 0.80 Stock: 5\nRegla 30cm   S/ 3.00 Stock: 20\nValor total: S/ 358.60\nProductos con stock bajo:\nLapicero     Stock: 8\nBorrador     Stock: 5` },
+        { numero: 29, titulo: "Boleta de Pago con Descuento AFP", lenguaje: "C",
+          codigo: `#include <stdio.h>\ntypedef struct { char nombre[30]; int codigo; float sueldo_bruto; } Empleado;\nfloat calcular_neto(Empleado e){ return e.sueldo_bruto*(1-0.13f); }\nvoid imprimir_boleta(Empleado e){\n    float desc=e.sueldo_bruto*0.13f, neto=calcular_neto(e);\n    printf("============================\\n");\n    printf("       BOLETA DE PAGO       \\n");\n    printf("============================\\n");\n    printf("Nombre      : %s\\n",e.nombre);\n    printf("Codigo      : %d\\n",e.codigo);\n    printf("Sueldo Bruto: S/ %.2f\\n",e.sueldo_bruto);\n    printf("Descuento AFP: S/ %.2f\\n",desc);\n    printf("Sueldo Neto : S/ %.2f\\n",neto);\n    printf("============================\\n");\n}\nint main(){\n    Empleado emp={"Rosa Quispe",1042,2800.0};\n    imprimir_boleta(emp);\n    return 0;\n}`,
+          salida: `============================\n       BOLETA DE PAGO       \n============================\nNombre      : Rosa Quispe\nCodigo      : 1042\nSueldo Bruto: S/ 2800.00\nDescuento AFP: S/ 364.00\nSueldo Neto : S/ 2436.00\n============================` },
+        { numero: 30, titulo: "Sensores Guardados en Archivo de Texto", lenguaje: "C",
+          codigo: `#include <stdio.h>\ntypedef struct { int id; char ubicacion[20]; float temperatura; float humedad; } Sensor;\nint main(){\n    Sensor s[3]={{1,"Sala A",22.5,60.0},{2,"Sala B",25.1,55.0},{3,"Exterior",18.3,75.0}};\n    FILE* f=fopen("sensores.txt","w");\n    for(int i=0;i<3;i++) fprintf(f,"%d,%s,%.1f,%.1f\\n",s[i].id,s[i].ubicacion,s[i].temperatura,s[i].humedad);\n    fclose(f);\n    Sensor r; float suma=0; int n=0;\n    f=fopen("sensores.txt","r");\n    printf("%-4s %-12s %-6s %-8s\\n","ID","Ubicacion","Temp","Humedad");\n    printf("--------------------------------\\n");\n    while(fscanf(f,"%d,%[^,],%f,%f\\n",&r.id,r.ubicacion,&r.temperatura,&r.humedad)==4){\n        printf("%-4d %-12s %-6.1f %.1f%%\\n",r.id,r.ubicacion,r.temperatura,r.humedad);\n        suma+=r.temperatura; n++;\n    }\n    fclose(f);\n    printf("Temperatura promedio: %.2fC\\n",suma/n);\n    return 0;\n}`,
+          salida: `ID   Ubicacion    Temp   Humedad\n--------------------------------\n1    Sala A       22.5   60.0%\n2    Sala B       25.1   55.0%\n3    Exterior     18.3   75.0%\nTemperatura promedio: 21.97C` }
     ],
-    5: [ // ACTIVIDAD 5 — Práctica Integradora Final
-        {
-            numero: 31,
-            titulo: "Sistema de Gestión de Biblioteca (struct + archivos)",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-#include <string.h>
-
-typedef struct {
-    int codigo; char titulo[50]; char autor[30]; int disponible;
-} Libro;
-
-int main() {
-    Libro lib[5] = {
-        {101,"Cien Anos de Soledad","Garcia Marquez",1},
-        {102,"Don Quijote","Cervantes",1},
-        {103,"El Principito","Saint-Exupery",1},
-        {104,"1984","Orwell",1},
-        {105,"Rayuela","Cortazar",1}
-    };
-
-    FILE* f; char nombre[30]; int cod;
-
-    for (int i = 1; i <= 3; i++) {
-        sprintf(nombre, "prestamo_%d.txt", i);
-        f = fopen(nombre, "r");
-        if (f != NULL) {
-            fscanf(f, "%d", &cod);
-            for (int j = 0; j < 5; j++)
-                if (lib[j].codigo == cod)
-                    lib[j].disponible = 0;
-            fclose(f);
-        }
-    }
-
-    printf("LIBROS DISPONIBLES:\\n");
-    printf("%-5s %-30s %-20s\\n", "Cod", "Titulo", "Autor");
-    printf("-------------------------------------------------------\\n");
-
-    int disp = 0;
-    for (int i = 0; i < 5; i++)
-        if (lib[i].disponible == 1) {
-            printf("%-5d %-30s %-20s\\n",
-                   lib[i].codigo, lib[i].titulo, lib[i].autor);
-            disp++;
-        }
-
-    float porc = (3.0f / 5) * 100;
-    printf("\\nLibros prestados: %.1f%%\\n", porc);
-    return 0;
-}`,
-            salida: `LIBROS DISPONIBLES:
-Cod   Titulo                         Autor               
--------------------------------------------------------
-103   El Principito                  Saint-Exupery       
-105   Rayuela                        Cortazar            
-
-Libros prestados: 60.0%`
-        },
-        {
-            numero: 32,
-            titulo: "Análisis de Temperaturas Mensuales (completar funciones)",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-
-float calcular_promedio(float t[], int n) {
-    float s = 0;
-    for (int i = 0; i < n; i++) s += t[i];
-    return s / n;
-}
-
-float encontrar_maximo(float t[], int n) {
-    float m = t[0];
-    for (int i = 1; i < n; i++)
-        if (t[i] > m) m = t[i];
-    return m;
-}
-
-float encontrar_minimo(float t[], int n) {
-    float m = t[0];
-    for (int i = 1; i < n; i++)
-        if (t[i] < m) m = t[i];
-    return m;
-}
-
-int contar_calurosos(float t[], int n) {
-    int c = 0;
-    for (int i = 0; i < n; i++)
-        if (t[i] > 25.0) c++;
-    return c;
-}
-
-int main() {
-    float temps[] = {22.5,24.1,26.3,28.0,25.5,27.8,29.1,
-                     24.5,23.8,26.0,25.2,27.0,28.5,23.5,
-                     22.8,24.9,26.7,27.3,25.8,26.5,28.2,
-                     23.1,24.7,27.9,26.1,25.4,28.8,22.6,
-                     24.3,27.5};
-    int total = 30;
-
-    float prom = calcular_promedio(temps, total);
-    float tmax = encontrar_maximo(temps, total);
-    float tmin = encontrar_minimo(temps, total);
-    int cal = contar_calurosos(temps, total);
-
-    printf("REPORTE DE TEMPERATURAS\\n");
-    printf("=======================\\n\\n");
-    printf("Total de dias: %d\\n", total);
-    printf("Temperatura promedio: %.2fC\\n", prom);
-    printf("Temperatura maxima: %.2fC\\n", tmax);
-    printf("Temperatura minima: %.2fC\\n", tmin);
-    printf("Dias calurosos (>25C): %d\\n", cal);
-    printf("Reporte generado exitosamente\\n");
-    return 0;
-}`,
-            salida: `REPORTE DE TEMPERATURAS
-=======================
-
-Total de dias: 30
-Temperatura promedio: 25.77C
-Temperatura maxima: 29.10C
-Temperatura minima: 22.50C
-Dias calurosos (>25C): 17
-Reporte generado exitosamente`
-        },
-        {
-            numero: 33,
-            titulo: "Corregir Sistema de Inventario — 4 Errores",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-#include <string.h>
-
-typedef struct {
-    int codigo; char nombre[30]; float precio; int stock;
-} Producto;
-
-int main() {
-    Producto inv[3] = {{1,"Laptop",2500.0,10},{2,"Mouse",35.0,50},
-                       {3,"Teclado",85.0,30}};
-    float total = 0;
-
-    // CORRECCION 1: i < 3 (no i <= 3)
-    for (int i = 0; i < 3; i++)
-        total += inv[i].precio * inv[i].stock;
-
-    printf("Valor total: S/ %.2f\\n", total);
-
-    Producto nuevo;
-    nuevo.codigo = 4;
-    // CORRECCION 2: argumentos correctos en strcpy
-    strcpy(nuevo.nombre, "Monitor");
-    nuevo.precio = 450.0; nuevo.stock = 15;
-
-    FILE* f = fopen("nuevo_producto.txt", "w");
-    fprintf(f, "%d,%s,%.2f,%d\\n",
-            nuevo.codigo, nuevo.nombre, nuevo.precio, nuevo.stock);
-    // CORRECCION 3: agregar fclose
-    fclose(f);
-
-    printf("Producto agregado al archivo\\n");
-    return 0;
-}`,
-            salida: `Valor total: S/ 30425.00
-Producto agregado al archivo`
-        },
-        {
-            numero: 34,
-            titulo: "Refactorizar con Función calcular_promedio()",
-            lenguaje: "C",
-            codigo: `#include <stdio.h>
-
-float calcular_promedio(float ventas[], int n) {
-    float suma = 0;
-    for (int i = 0; i < n; i++) suma += ventas[i];
-    return suma / n;
-}
-
-int main() {
-    float enero[5]   = {1200, 1500, 1350, 1600, 1450};
-    float febrero[5] = {1400, 1650, 1500, 1700, 1550};
-    float marzo[5]   = {1300, 1550, 1450, 1650, 1500};
-
-    printf("Promedio Enero:   %.2f\\n", calcular_promedio(enero,   5));
-    printf("Promedio Febrero: %.2f\\n", calcular_promedio(febrero, 5));
-    printf("Promedio Marzo:   %.2f\\n", calcular_promedio(marzo,   5));
-    return 0;
-}`,
-            salida: `Promedio Enero:   1420.00
-Promedio Febrero: 1560.00
-Promedio Marzo:   1490.00`
-        }
+    5: [
+        { numero: 31, titulo: "Sistema de Gestión de Biblioteca (struct + archivos)", lenguaje: "C",
+          codigo: `#include <stdio.h>\n#include <string.h>\ntypedef struct { int codigo; char titulo[50]; char autor[30]; int disponible; } Libro;\nint main(){\n    Libro lib[5]={{101,"Cien Anos de Soledad","Garcia Marquez",1},{102,"Don Quijote","Cervantes",1},{103,"El Principito","Saint-Exupery",1},{104,"1984","Orwell",1},{105,"Rayuela","Cortazar",1}};\n    FILE* f; char nombre[30]; int cod;\n    for(int i=1;i<=3;i++){\n        sprintf(nombre,"prestamo_%d.txt",i);\n        f=fopen(nombre,"r");\n        if(f!=NULL){fscanf(f,"%d",&cod);for(int j=0;j<5;j++) if(lib[j].codigo==cod) lib[j].disponible=0;fclose(f);}\n    }\n    printf("LIBROS DISPONIBLES:\\n");\n    printf("%-5s %-30s %-20s\\n","Cod","Titulo","Autor");\n    printf("-------------------------------------------------------\\n");\n    for(int i=0;i<5;i++)\n        if(lib[i].disponible==1) printf("%-5d %-30s %-20s\\n",lib[i].codigo,lib[i].titulo,lib[i].autor);\n    printf("\\nLibros prestados: %.1f%%\\n",(3.0f/5)*100);\n    return 0;\n}`,
+          salida: `LIBROS DISPONIBLES:\nCod   Titulo                         Autor\n-------------------------------------------------------\n103   El Principito                  Saint-Exupery\n105   Rayuela                        Cortazar\n\nLibros prestados: 60.0%` },
+        { numero: 32, titulo: "Análisis de Temperaturas Mensuales", lenguaje: "C",
+          codigo: `#include <stdio.h>\nfloat calcular_promedio(float t[],int n){float s=0;for(int i=0;i<n;i++)s+=t[i];return s/n;}\nfloat encontrar_maximo(float t[],int n){float m=t[0];for(int i=1;i<n;i++)if(t[i]>m)m=t[i];return m;}\nfloat encontrar_minimo(float t[],int n){float m=t[0];for(int i=1;i<n;i++)if(t[i]<m)m=t[i];return m;}\nint contar_calurosos(float t[],int n){int c=0;for(int i=0;i<n;i++)if(t[i]>25.0)c++;return c;}\nint main(){\n    float temps[]={22.5,24.1,26.3,28.0,25.5,27.8,29.1,24.5,23.8,26.0,25.2,27.0,28.5,23.5,22.8,24.9,26.7,27.3,25.8,26.5,28.2,23.1,24.7,27.9,26.1,25.4,28.8,22.6,24.3,27.5};\n    int total=30;\n    printf("REPORTE DE TEMPERATURAS\\n=======================\\n\\n");\n    printf("Total de dias: %d\\n",total);\n    printf("Temperatura promedio: %.2fC\\n",calcular_promedio(temps,total));\n    printf("Temperatura maxima: %.2fC\\n",encontrar_maximo(temps,total));\n    printf("Temperatura minima: %.2fC\\n",encontrar_minimo(temps,total));\n    printf("Dias calurosos (>25C): %d\\n",contar_calurosos(temps,total));\n    printf("Reporte generado exitosamente\\n");\n    return 0;\n}`,
+          salida: `REPORTE DE TEMPERATURAS\n=======================\n\nTotal de dias: 30\nTemperatura promedio: 25.77C\nTemperatura maxima: 29.10C\nTemperatura minima: 22.50C\nDias calurosos (>25C): 17\nReporte generado exitosamente` },
+        { numero: 33, titulo: "Corregir Sistema de Inventario — 4 Errores", lenguaje: "C",
+          codigo: `#include <stdio.h>\n#include <string.h>\ntypedef struct { int codigo; char nombre[30]; float precio; int stock; } Producto;\nint main(){\n    Producto inv[3]={{1,"Laptop",2500.0,10},{2,"Mouse",35.0,50},{3,"Teclado",85.0,30}};\n    float total=0;\n    for(int i=0;i<3;i++) total+=inv[i].precio*inv[i].stock; // CORRECCION 1: i<3\n    printf("Valor total: S/ %.2f\\n",total);\n    Producto nuevo; nuevo.codigo=4;\n    strcpy(nuevo.nombre,"Monitor"); // CORRECCION 2: argumentos correctos\n    nuevo.precio=450.0; nuevo.stock=15;\n    FILE* f=fopen("nuevo_producto.txt","w");\n    fprintf(f,"%d,%s,%.2f,%d\\n",nuevo.codigo,nuevo.nombre,nuevo.precio,nuevo.stock);\n    fclose(f); // CORRECCION 3: agregar fclose\n    printf("Producto agregado al archivo\\n");\n    return 0;\n}`,
+          salida: `Valor total: S/ 30425.00\nProducto agregado al archivo` },
+        { numero: 34, titulo: "Refactorizar con Función calcular_promedio()", lenguaje: "C",
+          codigo: `#include <stdio.h>\nfloat calcular_promedio(float ventas[],int n){\n    float suma=0;\n    for(int i=0;i<n;i++) suma+=ventas[i];\n    return suma/n;\n}\nint main(){\n    float enero[5]={1200,1500,1350,1600,1450};\n    float febrero[5]={1400,1650,1500,1700,1550};\n    float marzo[5]={1300,1550,1450,1650,1500};\n    printf("Promedio Enero:   %.2f\\n",calcular_promedio(enero,5));\n    printf("Promedio Febrero: %.2f\\n",calcular_promedio(febrero,5));\n    printf("Promedio Marzo:   %.2f\\n",calcular_promedio(marzo,5));\n    return 0;\n}`,
+          salida: `Promedio Enero:   1420.00\nPromedio Febrero: 1560.00\nPromedio Marzo:   1490.00` }
     ]
 };
 
-// ============================================================
 // FUNCIONES UNIDAD 2
-// ============================================================
-
-function contarEjerciciosU2() {
-    let total = 0;
-    for (let act in ejerciciosDB2) total += ejerciciosDB2[act].length;
-    return total;
-}
-
-function actualizarContadorU2() {
-    const total = contarEjerciciosU2();
-    document.querySelectorAll('.exercises-count-u2').forEach(el => {
-        el.innerHTML = `<i class="fas fa-file-code"></i> ${total} ejercicios`;
-    });
-}
-
-let actividadActualU2 = 'all';
-
-function openExercises2() {
-    document.getElementById('exercisesModal2').style.display = 'block';
-    mostrarEjercicios2('all');
-}
-
-function closeExercises2() {
-    document.getElementById('exercisesModal2').style.display = 'none';
-}
-
-function filterActivity2(actividad, e) {
-    actividadActualU2 = actividad;
-    document.querySelectorAll('#exercisesModal2 .filter-btn').forEach(btn => btn.classList.remove('active'));
-    if (e && e.target) e.target.classList.add('active');
-    mostrarEjercicios2(actividad);
-}
-
-function mostrarEjercicios2(actividad) {
-    const container = document.getElementById('exercisesList2');
-    container.innerHTML = '';
-
-    let ejercicios = [];
-    if (actividad === 'all') {
-        for (let act in ejerciciosDB2)
-            ejerciciosDB2[act].forEach(ej => ejercicios.push({...ej, actividad: act}));
-    } else {
-        if (ejerciciosDB2[actividad])
-            ejerciciosDB2[actividad].forEach(ej => ejercicios.push({...ej, actividad}));
-    }
-
-    if (ejercicios.length === 0) {
-        container.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:2rem;">No hay ejercicios en esta actividad.</p>';
-        return;
-    }
-
-    ejercicios.forEach(ej => {
-        const card = document.createElement('div');
-        card.className = 'exercise-card';
-        const uniqueId = `u2-ex-${ej.actividad}-${ej.numero}`;
-
-        card.innerHTML = `
-            <div class="exercise-header">
-                <div class="exercise-title">
-                    <span class="exercise-number">${ej.numero}</span>
-                    <div>
-                        <strong>${ej.titulo}</strong>
-                        <div><small>Actividad ${ej.actividad} — ${ej.lenguaje}</small></div>
-                    </div>
-                </div>
-            </div>
-            <div class="code-container">
-                <div class="code-header">
-                    <span>Código Fuente</span>
-                    <button class="btn-compile" onclick="runOnlineGDB_U2('${uniqueId}', '${ej.lenguaje}')">
-                        <i class="fas fa-play"></i> Ejecutar en OnlineGDB
-                    </button>
-                </div>
-                <pre><code id="code-${uniqueId}">${escapeHtml(ej.codigo)}</code></pre>
-            </div>
-            <div class="output-container">
-                <div class="output-header">📤 Salida del Programa</div>
-                <div class="output-content" id="out-${uniqueId}">${escapeHtml(ej.salida)}</div>
-            </div>
-        `;
+function contarEjerciciosU2(){let t=0;for(let a in ejerciciosDB2)t+=ejerciciosDB2[a].length;return t;}
+function actualizarContadorU2(){const t=contarEjerciciosU2();document.querySelectorAll('.exercises-count-u2').forEach(el=>{el.innerHTML=`<i class="fas fa-file-code"></i> ${t} ejercicios`;});}
+let actividadActualU2='all';
+function openExercises2(){document.getElementById('exercisesModal2').style.display='block';mostrarEjercicios2('all');}
+function closeExercises2(){document.getElementById('exercisesModal2').style.display='none';}
+function filterActivity2(actividad,e){actividadActualU2=actividad;document.querySelectorAll('#exercisesModal2 .filter-btn').forEach(btn=>btn.classList.remove('active'));if(e&&e.target)e.target.classList.add('active');mostrarEjercicios2(actividad);}
+function mostrarEjercicios2(actividad){
+    const container=document.getElementById('exercisesList2');
+    container.innerHTML='';
+    let ejercicios=[];
+    if(actividad==='all'){for(let act in ejerciciosDB2)ejerciciosDB2[act].forEach(ej=>ejercicios.push({...ej,actividad:act}));}
+    else{if(ejerciciosDB2[actividad])ejerciciosDB2[actividad].forEach(ej=>ejercicios.push({...ej,actividad}));}
+    if(ejercicios.length===0){container.innerHTML='<p style="text-align:center;color:var(--text-light);padding:2rem;">No hay ejercicios.</p>';return;}
+    ejercicios.forEach(ej=>{
+        const card=document.createElement('div');
+        card.className='exercise-card';
+        const uid=`u2-ex-${ej.actividad}-${ej.numero}`;
+        card.innerHTML=`<div class="exercise-header"><div class="exercise-title"><span class="exercise-number">${ej.numero}</span><div><strong>${ej.titulo}</strong><div><small>Actividad ${ej.actividad} — ${ej.lenguaje}</small></div></div></div></div><div class="code-container"><div class="code-header"><span>Código Fuente</span><button class="btn-compile" onclick="runU2('${uid}')"><i class="fas fa-play"></i> Ejecutar</button></div><pre><code id="code-${uid}">${escapeHtml(ej.codigo)}</code></pre></div><div class="output-container"><div class="output-header">📤 Salida del Programa</div><div class="output-content" id="out-${uid}">${escapeHtml(ej.salida)}</div></div>`;
         container.appendChild(card);
     });
 }
-
-function runOnlineGDB_U2(exerciseId, language) {
-    const codeElement = document.getElementById(`code-${exerciseId}`);
-    const outputContent = document.getElementById(`out-${exerciseId}`);
-    if (!outputContent) return;
-
-    outputContent.innerHTML = '<div style="color:#3b82f6;"><i class="fas fa-spinner fa-spin"></i> Compilando y ejecutando...</div>';
-
-    setTimeout(() => {
-        const ejActividadMatch = exerciseId.match(/u2-ex-(\d+)-(\d+)/);
-        if (ejActividadMatch) {
-            const act = ejActividadMatch[1];
-            const num = parseInt(ejActividadMatch[2]);
-            const lista = ejerciciosDB2[act];
-            if (lista) {
-                const ej = lista.find(e => e.numero === num);
-                if (ej) {
-                    outputContent.innerHTML = `<div style="color:#10b981;">✅ Programa ejecutado exitosamente</div><hr style="margin:10px 0;border:none;border-top:1px solid #e5e7eb;"><pre>${escapeHtml(ej.salida)}</pre>`;
-                    return;
-                }
-            }
-        }
-        outputContent.innerHTML = '<div style="color:#ef4444;">❌ No se encontró la salida esperada</div>';
-    }, 800);
+function runU2(uid){
+    const out=document.getElementById(`out-${uid}`);
+    if(!out)return;
+    out.innerHTML='<div style="color:#3b82f6;"><i class="fas fa-spinner fa-spin"></i> Ejecutando...</div>';
+    setTimeout(()=>{
+        const m=uid.match(/u2-ex-(\d+)-(\d+)/);
+        if(m){const ej=ejerciciosDB2[m[1]]&&ejerciciosDB2[m[1]].find(e=>e.numero===parseInt(m[2]));
+            if(ej){out.innerHTML=`<div style="color:#10b981;">✅ Ejecutado exitosamente</div><hr style="margin:10px 0;border:none;border-top:1px solid #334155;"><pre>${escapeHtml(ej.salida)}</pre>`;return;}}
+        out.innerHTML='<div style="color:#ef4444;">❌ Error</div>';
+    },800);
 }
-
-// Libro Unidad 2
-function openBook2() {
-    document.getElementById('bookModal2').style.display = 'block';
-    verificarLibroGuardado2();
-}
-
-function closeBook2() {
-    document.getElementById('bookModal2').style.display = 'none';
-}
-
-function verificarLibroGuardado2() {
-    const guardado = localStorage.getItem('libroPDF_U2');
-    const btns = document.querySelectorAll('.book-buttons-u2 .btn-secondary, .book-buttons-u2 .btn-danger');
-    btns.forEach(btn => {
-        btn.disabled = !guardado;
-        btn.style.opacity = guardado ? '1' : '0.5';
-    });
-}
-
-function subirLibro2() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.pdf';
-    input.onchange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (file.type !== 'application/pdf') { alert('❌ Por favor selecciona un archivo PDF'); return; }
-        const reader = new FileReader();
-        reader.onload = function(ev) {
-            try {
-                localStorage.setItem('libroPDF_U2', ev.target.result);
-                localStorage.setItem('libroPDF_U2_Nombre', file.name);
-                alert('✅ Libro Unidad 2 guardado exitosamente!');
-                verificarLibroGuardado2();
-            } catch(err) {
-                alert('❌ El archivo es demasiado grande o hubo un error.');
-            }
-        };
-        reader.readAsDataURL(file);
-    };
-    input.click();
-}
-
-function verLibro2() {
-    const base64 = localStorage.getItem('libroPDF_U2');
-    const nombre = localStorage.getItem('libroPDF_U2_Nombre') || 'libro_u2.pdf';
-    if (!base64) { alert('❌ No hay ningún libro guardado'); return; }
-    const w = window.open();
-    w.document.write(`<!DOCTYPE html><html><head><title>${nombre}</title>
-    <style>body{margin:0;padding:0;overflow:hidden;}iframe{width:100%;height:100vh;border:none;}</style>
-    </head><body><iframe src="${base64}"></iframe></body></html>`);
-}
-
-function eliminarLibro2() {
-    if (!localStorage.getItem('libroPDF_U2')) { alert('❌ No hay ningún libro guardado'); return; }
-    if (confirm('¿Estás seguro de que deseas eliminar el libro de la Unidad 2?')) {
-        localStorage.removeItem('libroPDF_U2');
-        localStorage.removeItem('libroPDF_U2_Nombre');
-        alert('✅ Libro eliminado exitosamente');
-        verificarLibroGuardado2();
-    }
-}
-
-// Inicializar contador U2 al cargar
-document.addEventListener('DOMContentLoaded', function() {
-    actualizarContadorU2();
-    verificarLibroGuardado2();
-});
+function openBook2(){document.getElementById('bookModal2').style.display='block';}
+function closeBook2(){document.getElementById('bookModal2').style.display='none';}
+function verLibro2(){window.open('https://milagros1804.github.io/2026_LP/libro_u2.pdf','_blank');}
+function verificarLibroGuardado2(){}
+function subirLibro2(){}
+function eliminarLibro2(){}
+document.addEventListener('DOMContentLoaded',function(){actualizarContadorU2();});
